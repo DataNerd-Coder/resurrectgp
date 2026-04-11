@@ -219,9 +219,14 @@
         }
 
         function handleSetup() {
-            if (currentMode === 'roadmap') generateRoadmap();
-            else setupCourses();
-        }
+    if (currentMode === 'roadmap') {
+        generateRoadmap();
+        document.getElementById('roadmapSection').scrollIntoView({ behavior: 'smooth' });
+    } else {
+        setupCourses();
+        document.getElementById('courseSection').scrollIntoView({ behavior: 'smooth' });
+    }
+}
 
         function setupCourses() {
             const num = parseInt(document.getElementById('numCourses').value);
@@ -231,6 +236,7 @@
                 grid.innerHTML += `<div class="p-4 bg-slate-50 rounded-lg border border-slate-100 flex items-center gap-3"><div class="flex-1"><label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">C${i} Units</label><input type="number" value="2" class="course-unit-input w-full bg-transparent text-lg font-semibold outline-none" data-index="${i}"></div>${currentMode === 'result' ? `<div class="w-24"><label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Grade</label><select class="course-grade-input w-full bg-transparent text-lg font-bold outline-none cursor-pointer"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option></select></div>` : ''}</div>`;
             }
             document.getElementById('courseSection').classList.remove('hidden');
+            document.getElementById('courseSection').scrollIntoView({ behavior: 'smooth' });
         }
 
         function generateRoadmap() {
