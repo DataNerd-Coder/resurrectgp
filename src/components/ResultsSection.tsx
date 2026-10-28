@@ -60,13 +60,13 @@ export function ResultsSection({
         <table className="w-full table-fixed">
           <thead>
             <tr>
-              <th className="px-6 py-3 text-xs font-normal text-[#6b6b6b] text-left w-1/2">
+              <th className="px-3 sm:px-6 py-3 text-xs font-normal text-[#6b6b6b] text-left w-1/2">
                 Course
               </th>
-              <th className="px-6 py-3 text-xs font-normal text-[#6b6b6b] text-right w-1/4">
+              <th className="px-3 sm:px-6 py-3 text-xs font-normal text-[#6b6b6b] text-right w-1/4">
                 Units
               </th>
-              <th className="px-6 py-3 text-xs font-normal text-[#6b6b6b] text-right w-1/4">
+              <th className="px-3 sm:px-6 py-3 text-xs font-normal text-[#6b6b6b] text-right w-1/4">
                 Grade
               </th>
             </tr>
@@ -77,15 +77,15 @@ export function ResultsSection({
                 key={course.id}
                 className="border-t border-[#f0f0f0] first:border-t-0"
               >
-                <td className="px-6 py-3">
+                <td className="px-3 sm:px-6 py-3">
                   <span className="mono-label text-sm text-[#3d3d3d]">
                     Course {String(course.id).padStart(2, "0")}
                   </span>
                 </td>
-                <td className="px-6 py-3 text-right num text-sm text-[#6b6b6b]">
+                <td className="px-3 sm:px-6 py-3 text-right num text-sm text-[#6b6b6b]">
                   {course.units}
                 </td>
-                <td className="px-6 py-3 text-right">
+                <td className="px-3 sm:px-6 py-3 text-right whitespace-nowrap">
                   <span className="grade-tag num">{course.grade}</span>
                   <span className="ml-2 text-xs text-[#6b6b6b] num">
                     {course.points.toFixed(1)}
