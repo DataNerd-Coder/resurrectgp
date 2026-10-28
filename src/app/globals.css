@@ -225,3 +225,12 @@ body {
   height: 14px;
   border-radius: 1px;
 }
+
+/* Boundary marks tie each printed label to its true position on the track */
+.scale-mark {
+  position: absolute;
+  top: -2px;
+  width: 1px;
+  height: 8px;
+  background: var(--control);
+}

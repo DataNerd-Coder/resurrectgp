@@ -15,6 +15,15 @@ interface ResultsSectionProps {
 /** Position of a GPA value (0 - 5) along the 5.0 scale track, as a percent. */
 const pct = (gpa: number) => `${Math.min(Math.max(gpa, 0), 5) * 20}%`;
 
+/** Class boundaries printed on the scale. Each label sits at its own value. */
+const SCALE_MARKS = [2.4, 3.5, 4.5];
+const SCALE_LABELS = [
+  { gpa: 0, name: "Pass" },
+  { gpa: 2.4, name: "2:2" },
+  { gpa: 3.5, name: "2:1" },
+  { gpa: 4.5, name: "First class" },
+];
+
 export function ResultsSection({
   result,
   captureRef,
@@ -113,13 +122,30 @@ export function ResultsSection({
           </div>
 
           <div className="mt-5">
-            <div className="flex justify-between text-xs text-[#6b6b6b] num mb-2">
-              <span>0.00 · Pass</span>
-              <span>2.40 · 2:2</span>
-              <span>3.50 · 2:1</span>
-              <span>4.50 · First class</span>
+            <div className="relative h-9 sm:h-4 mb-2 text-xs text-[#6b6b6b] num">
+              {SCALE_LABELS.map((mark) => (
+                <span
+                  key={mark.gpa}
+                  className={`absolute top-0 whitespace-nowrap ${
+                    mark.gpa === 0 ? "" : "-translate-x-1/2"
+                  }`}
+                  style={{ left: pct(mark.gpa) }}
+                >
+                  <span className="block sm:inline">{mark.gpa.toFixed(2)}</span>
+                  <span className="hidden sm:inline"> · </span>
+                  <span className="block sm:inline">{mark.name}</span>
+                </span>
+              ))}
             </div>
             <div className="scale-track">
+              {SCALE_MARKS.map((gpa) => (
+                <span
+                  key={gpa}
+                  className="scale-mark"
+                  style={{ left: pct(gpa) }}
+                  aria-hidden="true"
+                />
+              ))}
               <div
                 className="scale-tick bg-[#1d5fbf]"
                 style={{ left: pct(result.finalGpa) }}
