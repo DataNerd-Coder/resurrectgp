@@ -52,7 +52,7 @@ export function ResultsSection({
                 : "Every grade the plan assigns is shown on the row."}
             </p>
           </div>
-          <span className="mono-label text-xs text-[#3d3d3d] whitespace-nowrap">
+          <span className="mono-label text-xs text-[#3d3d3d] whitespace-nowrap uppercase tracking-[0.08em]">
             Scale 5.00
           </span>
         </div>
@@ -104,7 +104,7 @@ export function ResultsSection({
             <div className="flex items-baseline gap-3">
               <span
                 id="projectedGpa"
-                className="text-[30px] leading-none font-normal num text-[#1d5fbf]"
+                className="text-[40px] leading-none font-normal num text-[#1d5fbf]"
               >
                 {result.finalGpa.toFixed(2)}
               </span>
@@ -138,6 +138,11 @@ export function ResultsSection({
               ))}
             </div>
             <div className="scale-track">
+              <span
+                className="scale-fill"
+                style={{ width: pct(result.finalGpa) }}
+                aria-hidden="true"
+              />
               {SCALE_MARKS.map((gpa) => (
                 <span
                   key={gpa}
@@ -161,7 +166,7 @@ export function ResultsSection({
           onClick={onDownload}
           disabled={saving}
           aria-busy={saving}
-          className="w-full sm:flex-1 h-10 bg-[#141414] text-white text-sm font-medium rounded-md hover:bg-[#333333] active:bg-[#0a0a0a] transition bg-color disabled:opacity-60"
+          className="btn-elevated w-full sm:flex-1 h-10 bg-[#141414] text-white text-sm font-medium rounded-md hover:bg-[#333333] active:bg-[#0a0a0a] transition bg-color disabled:opacity-60"
         >
           {saving ? "Saving…" : "Save result"}
         </button>

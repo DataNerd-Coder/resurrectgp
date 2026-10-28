@@ -15,7 +15,7 @@
  },
  "style": {
   "id": "achromatic-ledger",
-  "name": "Achromatic ledger",
+  "name": "Achromatic ledger, lit (v2)",
   "theme": "light",
   "basis": "4 screens: a seller home, a per-agent insights page, a generated report, a settings page with usage numbers",
   "suits": [
@@ -27,7 +27,7 @@
    "workspace",
    "builder"
   ],
-  "idea": "The chrome holds no colour at all; money and counts are set in ink, the one chart hue marks the screen's main data element, and the only other hue is a small signal where a figure changed.",
+  "idea": "The chrome holds no colour at all; money and counts are set in ink, the one chart hue marks the screen's main data element, and the only other hue is a small signal where a figure changed. v2 lights it: a cold top-lit ground wash, layered cool shadows, a frost veil behind the dialog, soft blue focus rings and a low-opacity blue scale fill are the only additions, and the hue still rides the data.",
   "colourBudget": "under 1% coloured pixels; the chrome is ink, the one chart hue goes on the main data element, and the only other hue is a small change signal",
   "tokens": {
    "ground": "#f8f8f8",
@@ -113,7 +113,7 @@
    "a chart with no y-scale (the study's one example of this look hid magnitude behind hover and was flagged)",
    "a grey pill as the only button for the screen's main job: in testing an Approve repeated in grey on every row left the screen without a primary"
   ],
-  "notes": "The studied screens of this kind used 11-12px card radii, which §9.4 counts among the rare middle values; the library sets the tight pair (8 and 6) so the style lands on the bimodal rule. After testing, the chart hue moved from an unused third series colour onto the main data element: a screen whose only hue was a delta read as a kit."
+  "notes": "The studied screens of this kind used 11-12px card radii, which §9.4 counts among the rare middle values; the library sets the tight pair (8 and 6) so the style lands on the bimodal rule. After testing, the chart hue moved from an unused third series colour onto the main data element: a screen whose only hue was a delta read as a kit. v2 redrawn 2026-10-28 for a stated user constraint - the flat pass read as boring and not premium: depth, glass and gradient light were added while keeping the palette family (ground/ink/one hue) and Geist, so the meter's budget (under 1% hue) is preserved by keeping every addition inside the blue family at low opacity."
  },
  "shell": {
   "id": "open-plane",

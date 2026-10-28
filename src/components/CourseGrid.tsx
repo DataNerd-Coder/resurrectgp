@@ -68,7 +68,7 @@ export function CourseGrid({
               aria-label={`Units for course ${course.id}`}
               value={course.units}
               onChange={(e) => updateUnits(index, e.target.value)}
-              className="course-unit-input h-8 w-full bg-transparent border border-[#8f8f8f] rounded-md px-2 text-sm text-right num focus:border-[#0a0a0a] outline-none"
+              className="course-unit-input h-8 w-full bg-transparent border border-[#8f8f8f] rounded-md px-2 text-sm text-right num focus:border-[#1d5fbf] outline-none"
               data-index={course.id}
             />
             {mode === "result" ? (
@@ -78,7 +78,7 @@ export function CourseGrid({
                 onChange={(e) =>
                   updateGrade(index, e.target.value as Course["grade"])
                 }
-                className="course-grade-input h-8 w-full bg-transparent border border-[#8f8f8f] rounded-md px-1.5 text-sm cursor-pointer text-right num focus:border-[#0a0a0a] outline-none"
+                className="course-grade-input h-8 w-full bg-transparent border border-[#8f8f8f] rounded-md px-1.5 text-sm cursor-pointer text-right num focus:border-[#1d5fbf] outline-none"
               >
                 {GRADES.map((grade) => (
                   <option key={grade} value={grade}>
@@ -97,7 +97,7 @@ export function CourseGrid({
 
       <button
         onClick={onCalculate}
-        className="mt-6 w-full h-10 bg-[#141414] text-white text-sm font-medium rounded-md hover:bg-[#333333] active:bg-[#0a0a0a] transition bg-color"
+        className="btn-elevated mt-6 w-full h-10 bg-[#141414] text-white text-sm font-medium rounded-md hover:bg-[#333333] active:bg-[#0a0a0a] transition bg-color"
       >
         {mode === "result" ? "Compute result" : "Calculate comeback"}
       </button>

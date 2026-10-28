@@ -20,6 +20,11 @@
   --negative: #c4242a;
   --warning: #92400e;
   --chart-hue: #1d5fbf;
+  /* v2 "lit" additions: cool elevation, frost and focus light (all in the blue family) */
+  --shadow-panel: 0 1px 2px rgba(21, 38, 76, 0.05), 0 8px 24px -8px rgba(21, 38, 76, 0.09),
+    0 24px 48px -24px rgba(21, 38, 76, 0.12);
+  --shadow-raise: 0 1px 2px rgba(10, 10, 10, 0.22), 0 10px 24px -12px rgba(10, 10, 10, 0.32);
+  --ring-blue: 0 0 0 3px rgba(29, 95, 191, 0.15);
   --pill-positive-bg: #dcfae5;
   --pill-positive-ink: #04250e;
   --pill-negative-bg: #ffedea;
@@ -40,6 +45,12 @@ body {
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
+/* A cold top-lit wash replaces the flat ground: light falls from above,
+   panels cast soft shadows, and nothing is coloured outside the blue family. */
+body {
+  background-image: linear-gradient(180deg, #fafbfe 0%, #f2f5fa 42%, #e9edf5 100%);
+}
+
 /* Course codes and IDs only */
 .mono-label {
   font-family: var(--font-geist-mono), ui-monospace, monospace;
@@ -53,6 +64,12 @@ body {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
+  box-shadow: var(--shadow-panel);
+}
+
+/* The one near-black primary action; its own elevation, tint-free */
+.btn-elevated {
+  box-shadow: var(--shadow-raise);
 }
 
 .card-title {
@@ -85,7 +102,8 @@ body {
 }
 
 .input-focus:focus {
-  border-color: var(--accent);
+  border-color: #1d5fbf;
+  box-shadow: var(--ring-blue);
 }
 
 .mode-btn {
@@ -181,13 +199,17 @@ body {
 
 .blueprint-item {
   border-radius: 6px;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  box-shadow: 0 1px 2px rgba(21, 38, 76, 0.05);
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease,
+    box-shadow 0.15s ease;
   border: 1px solid transparent;
 }
 
 .blueprint-item:hover {
   border-color: var(--control);
-  background: var(--rule);
+  background: var(--surface);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px -2px rgba(21, 38, 76, 0.14);
 }
 
 .blueprint-item:active {
@@ -217,6 +239,14 @@ body {
   height: 4px;
   border-radius: 999px;
   background: var(--raised);
+}
+
+/* Low-opacity fill up to the current value: the ruler carries its data in hue */
+.scale-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  background: rgba(29, 95, 191, 0.18);
 }
 
 .scale-tick {

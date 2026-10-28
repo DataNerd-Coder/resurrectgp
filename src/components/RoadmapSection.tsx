@@ -67,7 +67,7 @@ export function RoadmapSection({
                 aria-label={`Target GPA for ${step.level}`}
                 value={step.value}
                 onChange={(e) => onStepChange(index, e.target.value)}
-                className="roadmap-input w-24 h-9 text-right bg-white border border-[#8f8f8f] rounded-md px-2 text-sm num focus:border-[#0a0a0a] outline-none"
+                className="roadmap-input w-24 h-9 text-right bg-white border border-[#8f8f8f] rounded-md px-2 text-sm num focus:border-[#1d5fbf] outline-none"
               />
             </div>
           </div>

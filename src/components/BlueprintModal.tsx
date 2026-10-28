@@ -68,7 +68,7 @@ export function BlueprintModal({ strategyId, onClose }: BlueprintModalProps) {
   return (
     <div
       id="blueprintModal"
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[rgba(10,10,10,0.5)]"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[rgba(10,10,10,0.45)] backdrop-blur-[6px]"
       role="dialog"
       aria-modal="true"
       aria-labelledby="blueprintModalHeading"
@@ -79,6 +79,10 @@ export function BlueprintModal({ strategyId, onClose }: BlueprintModalProps) {
       <div
         ref={panelRef}
         className="bg-white w-full max-w-xl rounded-lg overflow-hidden animate-fade relative max-h-[85vh] flex flex-col"
+        style={{
+          boxShadow: "var(--shadow-panel), 0 0 0 1px rgba(21,38,76,0.06)",
+          background: "linear-gradient(180deg, #ffffff 0%, #fafbfe 100%)",
+        }}
       >
         <div className="flex items-start justify-between gap-4 px-8 pt-7 pb-5 border-b border-[#e6e6e6]">
           <h2

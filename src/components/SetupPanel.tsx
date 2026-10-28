@@ -234,7 +234,7 @@ export function SetupPanel({
 
       <button
         onClick={onStart}
-        className="w-full h-10 bg-[#141414] text-white text-sm font-medium rounded-md hover:bg-[#333333] active:bg-[#0a0a0a] transition bg-color"
+        className="btn-elevated w-full h-10 bg-[#141414] text-white text-sm font-medium rounded-md hover:bg-[#333333] active:bg-[#0a0a0a] transition bg-color"
       >
         {mode === "roadmap"
           ? "Build the plan"
