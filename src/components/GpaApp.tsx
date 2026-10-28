@@ -231,7 +231,7 @@ export function GpaApp() {
       <div className="max-w-[1088px] mx-auto px-4 md:px-6 pt-5 pb-16">
         <Header onShare={handleShare} />
         <ModeSwitcher mode={mode} onChange={handleModeChange} />
-        <div className="mt-6 space-y-5">
+        <main className="mt-6 space-y-5">
           <SetupPanel
             mode={mode}
             value={setup}
@@ -264,7 +264,7 @@ export function GpaApp() {
               saving={saving}
             />
           )}
-        </div>
+        </main>
         <Footer onOpenStrategy={setModalStrategy} />
       </div>
       <BlueprintModal
