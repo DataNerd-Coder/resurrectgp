@@ -1,6 +1,6 @@
 {
  "url": "http://localhost:3000",
- "at": "2026-10-28T20:35:00.532Z",
+ "at": "2026-10-28T21:03:31.311Z",
  "allow": [],
  "viewports": [
   {
@@ -9,8 +9,8 @@
    "load": "load",
    "screens": 2,
    "filled": [
-    0.29,
-    0.35
+    0.33,
+    0.34
    ],
    "motion": {
     "elements": 4,
@@ -26,9 +26,9 @@
      "h": 900
     },
     "page": {
-     "height": 988,
+     "height": 1030,
      "screens": 1.1,
-     "words": 118,
+     "words": 117,
      "img": 0,
      "video": 0,
      "canvas": 0,
@@ -108,7 +108,7 @@
       "tracking": 0,
       "contrast": 4.8
      },
-     "measureChars": 103,
+     "measureChars": 73,
      "max": {
       "size": 24,
       "vw": 1.7,
@@ -140,11 +140,11 @@
      "textColors": [
       {
        "color": "#6b6b6b",
-       "share": 0.58
+       "share": 0.59
       },
       {
        "color": "#0a0a0a",
-       "share": 0.4
+       "share": 0.38
       },
       {
        "color": "#ffffff",
@@ -166,7 +166,7 @@
      "count": 5,
      "inHero": 5,
      "radius": 6,
-     "height": 36,
+     "height": 40,
      "withShadow": 0,
      "withGradient": 0,
      "mono": 0,
@@ -206,7 +206,7 @@
        "count": 3,
        "iconTopped": false,
        "rounded": true,
-       "top": 698
+       "top": 740
       }
      ]
     },
@@ -228,16 +228,16 @@
      "w": 1440,
      "h": 900
     },
-    "pageH": 988,
+    "pageH": 1030,
     "margins": {
      "left": 200,
      "right": 217
     },
     "sections": [
      {
-      "sel": "div.mt-6.space-y-5",
-      "tag": "div",
-      "top": 143,
+      "sel": "main.mt-6.space-y-5",
+      "tag": "main",
+      "top": 161,
       "height": 218,
       "words": 12,
       "media": 0,
@@ -260,20 +260,20 @@
      {
       "sel": "footer.mt-12.border-t",
       "tag": "footer",
-      "top": 409,
-      "height": 515,
-      "words": 83,
+      "top": 427,
+      "height": 539,
+      "words": 82,
       "media": 0,
-      "middle": 0,
+      "middle": 110,
       "heading": {
        "text": "Watchman Fellowship UNN",
        "size": 20,
        "tag": "h3"
       },
-      "left": 360,
-      "right": 468,
-      "textLeft": 360,
-      "textRight": 469,
+      "left": 200,
+      "right": 415,
+      "textLeft": 200,
+      "textRight": 415,
       "fullBleed": false,
       "footer": true,
       "hero": true,
@@ -306,12 +306,12 @@
     "stage": false,
     "explains": false,
     "slivers": [],
-    "voidShare": 0.18,
+    "voidShare": 0.17,
     "voidBox": {
-     "x": 1020,
+     "x": 840,
      "y": 360,
-     "w": 420,
-     "h": 540
+     "w": 600,
+     "h": 360
     }
    },
    "app": {
@@ -387,7 +387,7 @@
     "chartHues": 0,
     "placeholders": [],
     "type": {
-     "under13": 0.36,
+     "under13": 0.37,
      "tiny": 0,
      "tinySamples": [],
      "sizes": [
@@ -411,9 +411,10 @@
    "width": 768,
    "height": 1024,
    "load": "load",
-   "screens": 1,
+   "screens": 2,
    "filled": [
-    0.42
+    0.41,
+    0.39
    ],
    "motion": {
     "elements": 4,
@@ -429,9 +430,9 @@
      "h": 1024
     },
     "page": {
-     "height": 1024,
+     "height": 1030,
      "screens": 1,
-     "words": 118,
+     "words": 117,
      "img": 0,
      "video": 0,
      "canvas": 0,
@@ -511,7 +512,7 @@
       "tracking": 0,
       "contrast": 4.8
      },
-     "measureChars": 103,
+     "measureChars": 73,
      "max": {
       "size": 24,
       "vw": 3.1,
@@ -543,11 +544,11 @@
      "textColors": [
       {
        "color": "#6b6b6b",
-       "share": 0.58
+       "share": 0.59
       },
       {
        "color": "#0a0a0a",
-       "share": 0.4
+       "share": 0.38
       },
       {
        "color": "#ffffff",
@@ -569,7 +570,7 @@
      "count": 6,
      "inHero": 6,
      "radius": 6,
-     "height": 36,
+     "height": 40,
      "withShadow": 0,
      "withGradient": 0,
      "mono": 0,
@@ -609,7 +610,7 @@
        "count": 3,
        "iconTopped": false,
        "rounded": true,
-       "top": 698
+       "top": 740
       }
      ]
     },
@@ -631,16 +632,16 @@
      "w": 768,
      "h": 1024
     },
-    "pageH": 1024,
+    "pageH": 1030,
     "margins": {
      "left": 24,
      "right": 41
     },
     "sections": [
      {
-      "sel": "div.mt-6.space-y-5",
-      "tag": "div",
-      "top": 143,
+      "sel": "main.mt-6.space-y-5",
+      "tag": "main",
+      "top": 161,
       "height": 218,
       "words": 12,
       "media": 0,
@@ -663,11 +664,11 @@
      {
       "sel": "footer.mt-12.border-t",
       "tag": "footer",
-      "top": 409,
-      "height": 515,
-      "words": 83,
+      "top": 427,
+      "height": 539,
+      "words": 82,
       "media": 0,
-      "middle": 0,
+      "middle": 8,
       "heading": {
        "text": "Watchman Fellowship UNN",
        "size": 20,
@@ -785,7 +786,7 @@
     "chartHues": 0,
     "placeholders": [],
     "type": {
-     "under13": 0.36,
+     "under13": 0.37,
      "tiny": 0,
      "tinySamples": [],
      "sizes": [
@@ -811,7 +812,7 @@
    "load": "load",
    "screens": 2,
    "filled": [
-    0.63,
+    0.46,
     0.36
    ],
    "motion": {
@@ -828,9 +829,9 @@
      "h": 844
     },
     "page": {
-     "height": 1392,
-     "screens": 1.6,
-     "words": 118,
+     "height": 1418,
+     "screens": 1.7,
+     "words": 117,
      "img": 0,
      "video": 0,
      "canvas": 0,
@@ -963,7 +964,7 @@
      "sectionBgs": [
       {
        "color": "#ffffff",
-       "top": 159,
+       "top": 177,
        "hsl": {
         "h": 0,
         "s": 0,
@@ -974,11 +975,11 @@
      "textColors": [
       {
        "color": "#6b6b6b",
-       "share": 0.58
+       "share": 0.59
       },
       {
        "color": "#0a0a0a",
-       "share": 0.4
+       "share": 0.38
       },
       {
        "color": "#ffffff",
@@ -1000,7 +1001,7 @@
      "count": 6,
      "inHero": 6,
      "radius": 6,
-     "height": 36,
+     "height": 40,
      "withShadow": 0,
      "withGradient": 0,
      "mono": 0,
@@ -1055,16 +1056,16 @@
      "w": 390,
      "h": 844
     },
-    "pageH": 1392,
+    "pageH": 1418,
     "margins": {
      "left": 16,
      "right": 19
     },
     "sections": [
      {
-      "sel": "div.mt-6.space-y-5",
-      "tag": "div",
-      "top": 159,
+      "sel": "main.mt-6.space-y-5",
+      "tag": "main",
+      "top": 177,
       "height": 298,
       "words": 12,
       "media": 0,
@@ -1087,9 +1088,9 @@
      {
       "sel": "footer.mt-12.border-t",
       "tag": "footer",
-      "top": 505,
-      "height": 823,
-      "words": 83,
+      "top": 523,
+      "height": 831,
+      "words": 82,
       "media": 0,
       "middle": 0,
       "heading": {
@@ -1209,7 +1210,7 @@
     "chartHues": 0,
     "placeholders": [],
     "type": {
-     "under13": 0.36,
+     "under13": 0.37,
      "tiny": 0,
      "tinySamples": [],
      "sizes": [
