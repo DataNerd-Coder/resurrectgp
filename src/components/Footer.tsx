@@ -28,7 +28,7 @@ export function Footer({ onOpenStrategy }: FooterProps) {
               <button
                 key={item.id}
                 onClick={() => onOpenStrategy(item.id)}
-                className="blueprint-item h-9 px-4 text-sm font-medium text-[#0a0a0a] bg-[#ffffff] border border-[#8f8f8f]"
+                className="blueprint-item h-10 px-4 text-sm font-medium text-[#0a0a0a] bg-[#ffffff] border border-[#8f8f8f]"
               >
                 {item.title}
               </button>

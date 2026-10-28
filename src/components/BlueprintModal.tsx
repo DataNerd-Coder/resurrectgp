@@ -114,7 +114,7 @@ export function BlueprintModal({ strategyId, onClose }: BlueprintModalProps) {
         <div className="px-8 py-4 border-t border-[#e6e6e6] flex justify-end">
           <button
             onClick={onClose}
-            className="h-8 px-4 bg-[#141414] text-white text-sm font-medium rounded-md hover:bg-[#333333] active:bg-[#0a0a0a] transition bg-color"
+            className="h-10 px-4 bg-[#141414] text-white text-sm font-medium rounded-md hover:bg-[#333333] active:bg-[#0a0a0a] transition bg-color"
           >
             Got it
           </button>
