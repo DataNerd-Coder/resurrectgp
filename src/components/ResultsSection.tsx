@@ -52,7 +52,7 @@ export function ResultsSection({
                 : "Every grade the plan assigns is shown on the row."}
             </p>
           </div>
-          <span className="mono-label text-xs text-[#3d3d3d]">
+          <span className="mono-label text-xs text-[#3d3d3d] whitespace-nowrap">
             Scale 5.00
           </span>
         </div>
