@@ -20,7 +20,7 @@ const ACTIVITIES = [
 export function Footer({ onOpenStrategy }: FooterProps) {
   return (
     <footer className="mt-12 border-t border-[#e6e6e6] animate-fade">
-      <div className="max-w-[720px] mx-auto pt-10 pb-4 space-y-10">
+      <div className="pt-10 pb-4 space-y-10">
         <section>
           <h3 className="card-title mb-4">Resurrection blueprint</h3>
           <div className="flex flex-wrap gap-2">
@@ -40,7 +40,7 @@ export function Footer({ onOpenStrategy }: FooterProps) {
           <h3 className="text-xl font-semibold text-[#0a0a0a] mb-1">
             Watchman Fellowship UNN
           </h3>
-          <p className="text-sm text-[#6b6b6b]">
+          <p className="text-sm text-[#6b6b6b] max-w-[32rem]">
             &quot;Sanctuary of reference.&quot; Pray like it all depends on God
             and study like it depends on you.
           </p>
