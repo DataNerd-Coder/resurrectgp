@@ -78,7 +78,7 @@ export function BlueprintModal({ strategyId, onClose }: BlueprintModalProps) {
     >
       <div
         ref={panelRef}
-        className="bg-white w-full max-w-2xl rounded-lg overflow-hidden animate-fade relative max-h-[85vh] flex flex-col"
+        className="bg-white w-full max-w-xl rounded-lg overflow-hidden animate-fade relative max-h-[85vh] flex flex-col"
       >
         <div className="flex items-start justify-between gap-4 px-8 pt-7 pb-5 border-b border-[#e6e6e6]">
           <h2
