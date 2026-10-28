@@ -36,7 +36,7 @@ export function CourseGrid({
     >
       <div className="flex items-baseline justify-between gap-4 mb-6">
         <h2 id="sectionTitle" className="card-title">
-          Unit configuration
+          Course ledger
         </h2>
         <span id="courseTotal" className="text-xs text-[#6b6b6b] num">
           {courses.length} courses ·{" "}
