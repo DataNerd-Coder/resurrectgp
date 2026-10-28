@@ -45,7 +45,7 @@ export function CourseGrid({
       </div>
 
       <div id="courseGrid">
-        <div className="grid grid-cols-[1fr_112px_88px] gap-3 px-3 pb-2 border-b border-[#e6e6e6]">
+        <div className="grid grid-cols-[minmax(0,1fr)_80px_72px] gap-2 px-2 pb-2 border-b border-[#e6e6e6] sm:grid-cols-[1fr_112px_88px] sm:gap-3 sm:px-3">
           <span className="text-xs text-[#6b6b6b]">Course</span>
           <span className="text-xs text-[#6b6b6b] text-right">
             Units
@@ -57,7 +57,7 @@ export function CourseGrid({
         {courses.map((course, index) => (
           <div
             key={course.id}
-            className="grid grid-cols-[1fr_112px_88px] gap-3 px-3 h-11 items-center border-b border-[#f0f0f0] last:border-b-0"
+            className="grid grid-cols-[minmax(0,1fr)_80px_72px] gap-2 px-2 h-11 items-center border-b border-[#f0f0f0] last:border-b-0 sm:grid-cols-[1fr_112px_88px] sm:gap-3 sm:px-3"
           >
             <span className="mono-label text-sm text-[#3d3d3d]">
               Course {String(course.id).padStart(2, "0")}
