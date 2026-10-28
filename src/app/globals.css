@@ -92,7 +92,8 @@ body {
   font-size: 14px;
   font-weight: 400;
   color: var(--muted);
-  padding: 0 2px;
+  /* 10px of top padding turns a 23px text target into a 35px one */
+  padding: 10px 2px 8px;
   margin-bottom: -1px;
   border-bottom: 2px solid transparent;
 }
