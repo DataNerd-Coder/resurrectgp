@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const inter = Inter({
+const geist = Geist({
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-geist-sans",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-geist-mono",
 });
 
 const GTM_ID = "GTM-P6L4T3J5";
@@ -22,7 +29,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-slate-100 text-slate-800`}>
+      <body
+        className={`${geist.variable} ${geistMono.variable} bg-[#f2f4f7] text-[#0a0a0a]`}
+      >
         {/* Google Tag Manager */}
         <Script
           id="gtm-script"

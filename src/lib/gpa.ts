@@ -167,7 +167,7 @@ export interface Verdict {
 }
 
 export function roadmapVerdict(gap: number): Verdict {
-  if (gap >= 0) return { label: "Target Secured", color: "#10b981" };
-  if (gap >= -0.25) return { label: "Almost There", color: "#f59e0b" };
-  return { label: "High Risk Zone", color: "#ef4444" };
+  if (gap >= 0) return { label: "Target secured", color: "#2e7d32" };
+  if (gap >= -0.25) return { label: "Almost there", color: "#92400e" };
+  return { label: "High risk zone", color: "#c4242a" };
 }

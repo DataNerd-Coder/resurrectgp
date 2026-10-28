@@ -16,14 +16,20 @@ interface ModeSwitcherProps {
 
 export function ModeSwitcher({ mode, onChange }: ModeSwitcherProps) {
   return (
-    <div className="flex justify-center mb-8">
-      <div className="flex bg-white p-1 rounded-xl border border-slate-200 shadow-sm overflow-x-auto no-scrollbar">
+    <div
+      role="tablist"
+      aria-label="Planner mode"
+      className="border-b border-[#e6e6e6] no-scrollbar overflow-x-auto"
+    >
+      <div className="flex gap-6 min-w-max">
         {MODES.map((item) => (
           <button
             key={item.id}
             id={item.domId}
+            role="tab"
+            aria-selected={mode === item.id}
             onClick={() => onChange(item.id)}
-            className={`mode-btn px-4 py-2 text-[10px] font-bold uppercase rounded-lg transition whitespace-nowrap ${
+            className={`mode-btn pb-2 whitespace-nowrap ${
               mode === item.id ? "active" : ""
             }`}
           >

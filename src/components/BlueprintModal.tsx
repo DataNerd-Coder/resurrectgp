@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { STRATEGIES } from "@/data/strategies";
 
 interface BlueprintModalProps {
@@ -9,12 +9,57 @@ interface BlueprintModalProps {
 }
 
 export function BlueprintModal({ strategyId, onClose }: BlueprintModalProps) {
+  const panelRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     document.body.style.overflow = strategyId !== null ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [strategyId]);
+
+  // Focus enters the dialog on open, Tab stays inside, and on close it
+  // returns to the element that opened it.
+  useEffect(() => {
+    if (strategyId === null) return;
+
+    const opener = document.activeElement as HTMLElement | null;
+    const panel = panelRef.current;
+    const focusable = panel
+      ? Array.from(
+          panel.querySelectorAll<HTMLElement>(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+          ),
+        ).filter((el) => el.offsetParent !== null)
+      : [];
+
+    (focusable[0] ?? panel)?.focus();
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+      if (e.key === "Tab" && focusable.length > 0) {
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      opener?.focus();
+    };
+  }, [strategyId, onClose]);
 
   if (strategyId === null) return null;
 
@@ -23,36 +68,53 @@ export function BlueprintModal({ strategyId, onClose }: BlueprintModalProps) {
   return (
     <div
       id="blueprintModal"
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[rgba(10,10,10,0.5)]"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="blueprintModalHeading"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
-      <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden animate-fade relative">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-900 z-10"
-          aria-label="Close"
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
+      <div
+        ref={panelRef}
+        className="bg-white w-full max-w-2xl rounded-lg overflow-hidden animate-fade relative max-h-[85vh] flex flex-col"
+      >
+        <div className="flex items-start justify-between gap-4 px-8 pt-7 pb-5 border-b border-[#e6e6e6]">
+          <h2
+            id="blueprintModalHeading"
+            className="text-lg font-semibold text-[#0a0a0a] pr-8"
           >
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
+            {strategy.title}
+          </h2>
+          <button
+            onClick={onClose}
+            className="flex-none h-10 w-10 -mr-2 -mt-1 flex items-center justify-center text-[#6b6b6b] hover:text-[#0a0a0a] active:bg-[#f0f0f0] rounded-md transition color z-10"
+            aria-label="Close"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
         <div
           id="modalBody"
-          className="p-8 md:p-10 max-h-[80vh] overflow-y-auto modal-scroll"
+          className="p-8 overflow-y-auto modal-scroll"
         >
           {strategy.content}
         </div>
-        <div className="bg-slate-50 px-8 py-4 border-t border-slate-100 flex justify-end">
+        <div className="px-8 py-4 border-t border-[#e6e6e6] flex justify-end">
           <button
             onClick={onClose}
-            className="bg-slate-900 text-white px-6 py-2 rounded-lg text-sm font-bold uppercase"
+            className="h-8 px-4 bg-[#141414] text-white text-sm font-medium rounded-md hover:bg-[#333333] active:bg-[#0a0a0a] transition bg-color"
           >
             Got it
           </button>

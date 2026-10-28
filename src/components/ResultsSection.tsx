@@ -1,7 +1,7 @@
 "use client";
 
 import type { RefObject } from "react";
-import { getClass } from "@/lib/gpa";
+import { getClass, GRADE_POINTS } from "@/lib/gpa";
 import type { ResultPayload } from "@/lib/gpa";
 
 interface ResultsSectionProps {
@@ -9,100 +9,140 @@ interface ResultsSectionProps {
   captureRef: RefObject<HTMLDivElement | null>;
   onDownload: () => void;
   onShare: () => void;
+  saving?: boolean;
 }
+
+/** Position of a GPA value (0 - 5) along the 5.0 scale track, as a percent. */
+const pct = (gpa: number) => `${Math.min(Math.max(gpa, 0), 5) * 20}%`;
 
 export function ResultsSection({
   result,
   captureRef,
   onDownload,
   onShare,
+  saving = false,
 }: ResultsSectionProps) {
   const classInfo = getClass(result.finalGpa);
+  const aCount = result.courses.filter(
+    (c) => GRADE_POINTS[c.grade as keyof typeof GRADE_POINTS] === 5,
+  ).length;
 
   return (
-    <div id="resultsSection" className="animate-fade space-y-6">
+    <div id="resultsSection" className="animate-fade space-y-5">
       <div
         id="capture-area"
         ref={captureRef}
-        className="space-y-6 bg-[#f1f5f9] p-2 rounded-2xl"
+        className="app-panel overflow-hidden"
       >
-        <div className="app-panel rounded-2xl overflow-hidden shadow-sm">
-          <table className="w-full text-left table-fixed">
-            <thead className="bg-slate-50 border-b border-slate-100">
-              <tr>
-                <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase w-1/2">
-                  Course
-                </th>
-                <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase text-center w-1/4">
-                  Unit
-                </th>
-                <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase text-right w-1/4">
-                  Grade
-                </th>
-              </tr>
-            </thead>
-            <tbody id="roadmapTableBody" className="divide-y divide-slate-100">
-              {result.courses.map((course) => {
-                const tagStyle =
-                  course.grade === "A"
-                    ? "bg-slate-900 text-white"
-                    : course.grade === "B"
-                      ? "bg-slate-600 text-white"
-                      : "bg-slate-200 text-slate-800";
+        <div className="flex items-baseline justify-between gap-4 px-6 pt-5 pb-4 border-b border-[#e6e6e6]">
+          <div>
+            <h2 className="card-title mb-1">Resurrection blueprint</h2>
+            <p className="text-xs text-[#6b6b6b]">
+              {aCount > 0
+                ? `You need ${aCount} A${aCount > 1 ? "s" : ""} to land this plan.`
+                : "Every grade the plan assigns is shown on the row."}
+            </p>
+          </div>
+          <span className="mono-label text-xs text-[#3d3d3d]">
+            Scale 5.00
+          </span>
+        </div>
 
-                return (
-                  <tr key={course.id}>
-                    <td className="px-6 py-5 font-semibold text-sm">
-                      Course {course.id}
-                    </td>
-                    <td className="px-6 py-5 text-center text-slate-500 text-sm">
-                      {course.units} Units
-                    </td>
-                    <td className="px-6 py-5 text-right">
-                      <span className={`grade-tag ${tagStyle}`}>
-                        {course.grade}
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          <div className="bg-slate-50 p-6 flex justify-between items-center border-t border-slate-100">
-            <div>
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">
-                Projected Outcome
+        <table className="w-full table-fixed">
+          <thead>
+            <tr>
+              <th className="px-6 py-3 text-xs font-normal text-[#6b6b6b] text-left w-1/2">
+                Course
+              </th>
+              <th className="px-6 py-3 text-xs font-normal text-[#6b6b6b] text-right w-1/4">
+                Units
+              </th>
+              <th className="px-6 py-3 text-xs font-normal text-[#6b6b6b] text-right w-1/4">
+                Grade
+              </th>
+            </tr>
+          </thead>
+          <tbody id="roadmapTableBody">
+            {result.courses.map((course) => (
+              <tr
+                key={course.id}
+                className="border-t border-[#f0f0f0] first:border-t-0"
+              >
+                <td className="px-6 py-3">
+                  <span className="mono-label text-sm text-[#3d3d3d]">
+                    Course {String(course.id).padStart(2, "0")}
+                  </span>
+                </td>
+                <td className="px-6 py-3 text-right num text-sm text-[#6b6b6b]">
+                  {course.units}
+                </td>
+                <td className="px-6 py-3 text-right">
+                  <span className="grade-tag num">{course.grade}</span>
+                  <span className="ml-2 text-xs text-[#6b6b6b] num">
+                    {course.points.toFixed(1)}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <div className="px-6 py-5 border-t border-[#e6e6e6]">
+          <div className="flex items-baseline justify-between gap-4">
+            <span className="text-xs text-[#6b6b6b]">
+              Projected outcome
+            </span>
+            <div className="flex items-baseline gap-3">
+              <span
+                id="projectedGpa"
+                className="text-[30px] leading-none font-normal num text-[#1d5fbf]"
+              >
+                {result.finalGpa.toFixed(2)}
               </span>
-              <div className="flex items-center gap-3">
-                <span
-                  id="projectedGpa"
-                  className="text-3xl font-bold text-slate-950"
-                >
-                  {result.finalGpa.toFixed(2)}
-                </span>
-                <span id="classBadge" className={`class-badge ${classInfo.style}`}>
-                  {classInfo.name}
-                </span>
-              </div>
+              <span
+                id="classBadge"
+                className="class-badge"
+                style={{
+                  background: "var(--pill-neutral-bg)",
+                  color: "var(--pill-neutral-ink)",
+                }}
+              >
+                {classInfo.name}
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-5">
+            <div className="flex justify-between text-xs text-[#6b6b6b] num mb-2">
+              <span>0.00 · Pass</span>
+              <span>2.40 · 2:2</span>
+              <span>3.50 · 2:1</span>
+              <span>4.50 · First class</span>
+            </div>
+            <div className="scale-track">
+              <div
+                className="scale-tick bg-[#1d5fbf]"
+                style={{ left: pct(result.finalGpa) }}
+                aria-hidden="true"
+              />
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col sm:flex-row gap-3">
         <button
           onClick={onDownload}
-          className="flex-1 bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-slate-800 transition"
+          disabled={saving}
+          aria-busy={saving}
+          className="flex-1 h-10 bg-[#141414] text-white text-sm font-medium rounded-md hover:bg-[#333333] active:bg-[#0a0a0a] transition bg-color disabled:opacity-60"
         >
-          Save Result
+          {saving ? "Saving…" : "Save result"}
         </button>
         <button
           onClick={onShare}
-          className="sm:w-auto bg-[#25D366] text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition shadow-lg"
+          className="h-10 px-4 bg-[#ffffff] text-sm font-medium text-[#0a0a0a] border border-[#8f8f8f] rounded-md hover:border-[#0a0a0a] hover:bg-[#f0f0f0] active:bg-[#eeeeee] transition border-color sm:w-auto flex items-center justify-center gap-2"
         >
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12.004 4.008a7.992 7.992 0 00-6.143 2.872.75.75 0 01-1.147-.968A9.492 9.492 0 0112.004 2.508c5.247 0 9.5 4.253 9.5 9.5s-4.253 9.5-9.5 9.5a9.492 9.492 0 01-7.29-3.404.75.75 0 111.147-.968 7.992 7.992 0 106.143-12.628zm-5.636 12.358a.75.75 0 01-.131 1.05 9.467 9.467 0 01-2.031 1.4.75.75 0 11-.643-1.356c.642-.303 1.251-.663 1.815-1.071a.75.75 0 01.99.077zm-2.16-9.734a.75.75 0 111.238-.847c-.452.66-.827 1.373-1.114 2.128a.75.75 0 11-1.408-.517 9.49 9.49 0 011.284-2.764z" />
-          </svg>
           Share on WhatsApp
         </button>
       </div>

@@ -1,51 +1,140 @@
 @import "tailwindcss";
 
+/* Achromatic ledger — dealt style (see .taste-skill/direction.json).
+   The chrome holds no colour; the one chart hue #1d5fbf lives only on the
+   screen's main data element (projected GPA, target marks). */
+
+:root {
+  --ground: #f2f4f7;
+  --surface: #ffffff;
+  --raised: #eeeeee;
+  --border: #e6e6e6;
+  --rule: #f0f0f0;
+  /* Interactive control boundaries (inputs, selects, outlined buttons).
+     3.2:1 on white so a control is identifiable by its edge alone. */
+  --control: #8f8f8f;
+  --text: #0a0a0a;
+  --muted: #6b6b6b;
+  --accent: #141414;
+  --positive: #2e7d32;
+  --negative: #c4242a;
+  --warning: #92400e;
+  --chart-hue: #1d5fbf;
+  --pill-positive-bg: #dcfae5;
+  --pill-positive-ink: #04250e;
+  --pill-negative-bg: #ffedea;
+  --pill-negative-ink: #831c1e;
+  --pill-warning-bg: #fffbeb;
+  --pill-warning-ink: #92400e;
+  --pill-neutral-bg: #eeeeee;
+  --pill-neutral-ink: #3d3d3d;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background-color: #f1f5f9;
+  background-color: var(--ground);
+  color: var(--text);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Course codes and IDs only */
+.mono-label {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
 }
 
 .app-panel {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.field-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  background: var(--surface);
+  border: 1px solid var(--control);
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.field-input::placeholder {
+  color: #757575;
 }
 
 .input-focus:focus {
-  border-color: #3b82f6;
-  outline: none;
+  border-color: var(--accent);
 }
 
-.grade-tag {
-  width: 32px;
-  height: 32px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 0.875rem;
+.mode-btn {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--muted);
+  padding: 0 2px;
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+}
+
+.mode-btn:hover {
+  color: var(--text);
 }
 
 .mode-btn.active {
-  background-color: #0f172a;
-  color: white;
+  color: var(--text);
+  font-weight: 500;
+  border-bottom-color: var(--text);
+}
+
+.grade-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  min-width: 24px;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 12px;
+  background: var(--pill-neutral-bg);
+  color: var(--pill-neutral-ink);
 }
 
 .class-badge {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 4px;
-  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(5px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -54,17 +143,24 @@ body {
 }
 
 .animate-fade {
-  animation: fadeIn 0.4s ease forwards;
+  animation: fadeIn 0.25s ease forwards;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade {
+    animation: none;
+  }
+}
+
+/* Roadmap ledger rows: level on the left lane, a 1px rail, input on the right */
 .roadmap-step::before {
   content: "";
   position: absolute;
-  left: -17px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: #e2e8f0;
+  left: 5px;
+  top: 20px;
+  bottom: -20px;
+  width: 1px;
+  background: var(--border);
 }
 
 .roadmap-step:last-child::before {
@@ -73,23 +169,28 @@ body {
 
 .roadmap-dot {
   position: absolute;
-  left: -21px;
-  top: 0;
-  width: 10px;
-  height: 10px;
+  left: 0;
+  top: 12px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
-  background: #0f172a;
-  border: 2px solid white;
+  background: var(--text);
+  border: 2px solid var(--ground);
 }
 
 .blueprint-item {
-  transition: all 0.2s ease;
-  border-left: 3px solid transparent;
+  border-radius: 6px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  border: 1px solid transparent;
 }
 
 .blueprint-item:hover {
-  border-left-color: #3b82f6;
-  background: #f8fafc;
+  border-color: var(--control);
+  background: var(--rule);
+}
+
+.blueprint-item:active {
+  background: var(--raised);
 }
 
 .modal-scroll::-webkit-scrollbar {
@@ -97,7 +198,7 @@ body {
 }
 
 .modal-scroll::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: var(--control);
   border-radius: 10px;
 }
 
@@ -107,4 +208,20 @@ body {
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* Faint scale track for the target ruler (signature element) */
+.scale-track {
+  position: relative;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--raised);
+}
+
+.scale-tick {
+  position: absolute;
+  top: -5px;
+  width: 2px;
+  height: 14px;
+  border-radius: 1px;
 }

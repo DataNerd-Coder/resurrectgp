@@ -9,7 +9,7 @@ import {
   simulateTarget,
 } from "@/lib/gpa";
 import type { Course, Mode, ResultPayload, RoadmapStep } from "@/lib/gpa";
-import { Header, ShareBar } from "@/components/Header";
+import { Header } from "@/components/Header";
 import { ModeSwitcher } from "@/components/ModeSwitcher";
 import { SetupPanel } from "@/components/SetupPanel";
 import type { SetupState } from "@/components/SetupPanel";
@@ -31,7 +31,7 @@ const INITIAL_SETUP: SetupState = {
 };
 
 const SHARE_TEXT =
-  "Omo, I just used *Resurrect My GPA* to plan my academic comeback! \n \nTime to LockIn 📖 \n\n 🚀 Check your path to First Class & Plan your comeback: https://resurrectgp.vercel.app";
+  "Omo, I just used *Resurrect My GPA* to plan my academic comeback! \n \nTime to LockIn. Check your path to First Class and plan your comeback: https://resurrectgp.vercel.app";
 
 export function GpaApp() {
   const [mode, setMode] = useState<Mode>("semester");
@@ -45,6 +45,8 @@ export function GpaApp() {
 
   const [result, setResult] = useState<ResultPayload | null>(null);
   const [modalStrategy, setModalStrategy] = useState<number | null>(null);
+  const [setupError, setSetupError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
   const captureRef = useRef<HTMLDivElement>(null);
 
@@ -94,14 +96,17 @@ export function GpaApp() {
     setShowCourseSection(false);
     setShowRoadmap(false);
     setResult(null);
+    setSetupError(null);
   };
 
   const handleStart = () => {
     if (mode === "roadmap") {
       if (setup.toLevel <= setup.fromLevel) {
-        window.alert("Target level must be higher.");
+        setSetupError("Milestone level must come after the starting level.");
+        document.getElementById("roadmapInputs")?.scrollIntoView({ behavior: "smooth", block: "center" });
         return;
       }
+      setSetupError(null);
       setRoadmapSteps(buildRoadmapSteps(setup.fromLevel, setup.toLevel));
       setShowRoadmap(true);
       return;
@@ -150,7 +155,7 @@ export function GpaApp() {
 
   const handleDownload = async () => {
     const element = captureRef.current;
-    if (!element) return;
+    if (!element || saving) return;
 
     const html2canvas = (
       window as unknown as {
@@ -168,14 +173,19 @@ export function GpaApp() {
       return;
     }
 
-    const canvas = await html2canvas(element, {
-      backgroundColor: "#f1f5f9",
-      scale: 2,
-    });
-    const link = document.createElement("a");
-    link.download = "GP-Plan.png";
-    link.href = canvas.toDataURL();
-    link.click();
+    setSaving(true);
+    try {
+      const canvas = await html2canvas(element, {
+        backgroundColor: "#ffffff",
+        scale: 2,
+      });
+      const link = document.createElement("a");
+      link.download = "GP-Plan.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleShare = () => {
@@ -193,45 +203,42 @@ export function GpaApp() {
 
   return (
     <>
-      <ShareBar onShare={handleShare} />
-      <div className="max-w-5xl mx-auto p-4 md:p-10">
-        <Header />
+      <div className="max-w-[1088px] mx-auto px-4 md:px-6 pt-5 pb-16">
+        <Header onShare={handleShare} />
         <ModeSwitcher mode={mode} onChange={handleModeChange} />
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-4 space-y-6 animate-fade">
-            <SetupPanel
+        <div className="mt-6 space-y-5">
+          <SetupPanel
+            mode={mode}
+            value={setup}
+            onChange={updateSetup}
+            onStart={handleStart}
+            error={setupError}
+          />
+          {showCourseSection && (
+            <CourseGrid
               mode={mode}
-              value={setup}
-              onChange={updateSetup}
-              onStart={handleStart}
+              courses={courses}
+              onChange={setCourses}
+              onCalculate={handleCalculate}
             />
-          </div>
-          <div className="lg:col-span-8 space-y-6">
-            {showCourseSection && (
-              <CourseGrid
-                mode={mode}
-                courses={courses}
-                onChange={setCourses}
-                onCalculate={handleCalculate}
-              />
-            )}
-            {showRoadmap && roadmapResult && (
-              <RoadmapSection
-                steps={roadmapSteps}
-                result={roadmapResult}
-                target={roadmapTarget}
-                onStepChange={handleStepChange}
-              />
-            )}
-            {result && (
-              <ResultsSection
-                result={result}
-                captureRef={captureRef}
-                onDownload={handleDownload}
-                onShare={handleShare}
-              />
-            )}
-          </div>
+          )}
+          {showRoadmap && roadmapResult && (
+            <RoadmapSection
+              steps={roadmapSteps}
+              result={roadmapResult}
+              target={roadmapTarget}
+              onStepChange={handleStepChange}
+            />
+          )}
+          {result && (
+            <ResultsSection
+              result={result}
+              captureRef={captureRef}
+              onDownload={handleDownload}
+              onShare={handleShare}
+              saving={saving}
+            />
+          )}
         </div>
         <Footer onOpenStrategy={setModalStrategy} />
       </div>

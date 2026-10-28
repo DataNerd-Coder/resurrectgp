@@ -18,6 +18,7 @@ interface SetupPanelProps {
   value: SetupState;
   onChange: (patch: Partial<SetupState>) => void;
   onStart: () => void;
+  error?: string | null;
 }
 
 export function SetupPanel({
@@ -25,83 +26,107 @@ export function SetupPanel({
   value,
   onChange,
   onStart,
+  error,
 }: SetupPanelProps) {
   return (
-    <div className="app-panel p-8 rounded-2xl space-y-5 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-900 border-b pb-4 border-slate-100">
-        Setup
-      </h2>
+    <div
+      id="setupPanel"
+      className="app-panel p-6 space-y-5 animate-fade"
+    >
+      <div className="flex items-baseline justify-between gap-4">
+        <h2 className="card-title">Setup</h2>
+        <span className="text-xs text-[#6b6b6b]">
+          {mode === "roadmap"
+            ? "Semester-by-semester plan"
+            : mode === "cgpa"
+              ? "Cumulative recovery"
+              : mode === "result"
+                ? "Enter your results"
+                : "One semester, per-course marks"}
+        </span>
+      </div>
 
       {mode !== "roadmap" && (
-        <div id="standardInputs" className="space-y-4">
+        <div
+          id="standardInputs"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+        >
           {mode === "cgpa" && (
-            <div id="cgpaInputs" className="space-y-4">
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+            <>
+              <div id="cgpaInputs">
+                <label htmlFor="currentGpa" className="field-label">
                   Current CGPA
                 </label>
                 <input
                   id="currentGpa"
                   type="number"
                   step="0.01"
+                  inputMode="decimal"
                   placeholder="3.50"
                   value={value.currentGpa}
                   onChange={(e) => onChange({ currentGpa: e.target.value })}
-                  className="input-focus w-full p-3 bg-white border border-slate-200 rounded-lg"
+                  className="input-focus field-input num"
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
-                  Total Units Taken
+                <label htmlFor="totalUnitsPassed" className="field-label">
+                  Total units taken so far
                 </label>
                 <input
                   id="totalUnitsPassed"
                   type="number"
+                  inputMode="numeric"
                   placeholder="Units before now"
                   value={value.totalUnitsPassed}
                   onChange={(e) =>
                     onChange({ totalUnitsPassed: e.target.value })
                   }
-                  className="input-focus w-full p-3 bg-white border border-slate-200 rounded-lg"
+                  className="input-focus field-input num"
                 />
               </div>
-            </div>
+            </>
           )}
 
           {mode !== "result" && (
             <div id="targetInputContainer">
               <label
+                htmlFor="targetGpa"
                 id="targetLabel"
-                className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1"
+                className="field-label"
               >
-                Target Semester GPA
+                Target GPA
               </label>
               <input
                 id="targetGpa"
                 type="number"
                 step="0.01"
+                inputMode="decimal"
                 placeholder="(What are you aiming for?)"
                 value={value.targetGpa}
                 onChange={(e) => onChange({ targetGpa: e.target.value })}
-                className="input-focus w-full p-3 border border-slate-300 rounded-lg font-semibold text-slate-950"
+                className="input-focus field-input num"
               />
             </div>
           )}
 
-          <div id="courseCountInput">
-            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
-              Number of Courses
+          <div
+            id="courseCountInput"
+            className={mode === "result" ? "sm:col-span-2" : ""}
+          >
+            <label htmlFor="numCourses" className="field-label">
+              Number of courses
             </label>
             <input
               id="numCourses"
               type="number"
+              inputMode="numeric"
               value={value.numCourses}
               min={1}
               max={15}
               onChange={(e) =>
                 onChange({ numCourses: parseInt(e.target.value, 10) || 1 })
               }
-              className="input-focus w-full p-3 bg-white border border-slate-200 rounded-lg mb-4"
+              className="input-focus field-input num"
             />
           </div>
         </div>
@@ -109,10 +134,10 @@ export function SetupPanel({
 
       {mode === "roadmap" && (
         <div id="roadmapInputs" className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
-                From Level
+              <label htmlFor="fromLevel" className="field-label">
+                From level
               </label>
               <select
                 id="fromLevel"
@@ -120,7 +145,7 @@ export function SetupPanel({
                 onChange={(e) =>
                   onChange({ fromLevel: parseInt(e.target.value, 10) })
                 }
-                className="input-focus w-full p-3 bg-white border border-slate-200 rounded-lg text-sm font-semibold"
+                className="input-focus field-input"
               >
                 <option value={0}>100L - 1st</option>
                 <option value={1}>100L - 2nd</option>
@@ -135,8 +160,8 @@ export function SetupPanel({
               </select>
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
-                To Level
+              <label htmlFor="toLevel" className="field-label">
+                To level
               </label>
               <select
                 id="toLevel"
@@ -144,7 +169,7 @@ export function SetupPanel({
                 onChange={(e) =>
                   onChange({ toLevel: parseInt(e.target.value, 10) })
                 }
-                className="input-focus w-full p-3 bg-white border border-slate-200 rounded-lg text-sm font-semibold"
+                className="input-focus field-input"
               >
                 <option value={1}>100L - 2nd</option>
                 <option value={2}>200L - 1st</option>
@@ -158,46 +183,64 @@ export function SetupPanel({
               </select>
             </div>
           </div>
-          <div>
-            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
-              Current CGPA
-            </label>
-            <input
-              id="roadmapCurrentGpa"
-              type="number"
-              step="0.01"
-              placeholder="3.00"
-              value={value.roadmapCurrentGpa}
-              onChange={(e) =>
-                onChange({ roadmapCurrentGpa: e.target.value })
-              }
-              className="input-focus w-full p-3 bg-white border border-slate-200 rounded-lg"
-            />
-          </div>
-          <div>
-            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
-              Milestone CGPA
-            </label>
-            <input
-              id="roadmapTargetGpa"
-              type="number"
-              step="0.01"
-              placeholder="4.50"
-              value={value.roadmapTargetGpa}
-              onChange={(e) =>
-                onChange({ roadmapTargetGpa: e.target.value })
-              }
-              className="input-focus w-full p-3 border border-slate-300 rounded-lg font-bold text-slate-950"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="roadmapCurrentGpa" className="field-label">
+                Current CGPA
+              </label>
+              <input
+                id="roadmapCurrentGpa"
+                type="number"
+                step="0.01"
+                inputMode="decimal"
+                placeholder="3.00"
+                value={value.roadmapCurrentGpa}
+                onChange={(e) =>
+                  onChange({ roadmapCurrentGpa: e.target.value })
+                }
+                className="input-focus field-input num"
+              />
+            </div>
+            <div>
+              <label htmlFor="roadmapTargetGpa" className="field-label">
+                Milestone CGPA
+              </label>
+              <input
+                id="roadmapTargetGpa"
+                type="number"
+                step="0.01"
+                inputMode="decimal"
+                placeholder="4.50"
+                value={value.roadmapTargetGpa}
+                onChange={(e) =>
+                  onChange({ roadmapTargetGpa: e.target.value })
+                }
+                className="input-focus field-input num"
+              />
+            </div>
           </div>
         </div>
       )}
 
+      {error && (
+        <p
+          id="setupError"
+          role="alert"
+          className="text-xs text-[#c4242a]"
+        >
+          {error}
+        </p>
+      )}
+
       <button
         onClick={onStart}
-        className="w-full bg-slate-950 text-white py-3 rounded-lg font-semibold hover:bg-slate-800 transition"
+        className="w-full h-10 bg-[#141414] text-white text-sm font-medium rounded-md hover:bg-[#333333] active:bg-[#0a0a0a] transition bg-color"
       >
-        Start Planning
+        {mode === "roadmap"
+          ? "Build the plan"
+          : mode === "result"
+            ? "Open the ledger"
+            : "Start planning"}
       </button>
     </div>
   );

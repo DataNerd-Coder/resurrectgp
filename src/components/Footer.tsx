@@ -5,91 +5,67 @@ interface FooterProps {
 }
 
 const BLUEPRINTS = [
-  { id: 1, strategy: "Strategy 01", title: "The Heavy Hitters" },
-  { id: 2, strategy: "Strategy 02", title: "The 0.2 Safety Net" },
-  { id: 3, strategy: "Strategy 03", title: "The PQ Protocol" },
-  { id: 4, strategy: "Strategy 04", title: "Comeback Logic" },
+  { id: 1, title: "The Heavy Hitters" },
+  { id: 2, title: "The 0.2 Safety Net" },
+  { id: 3, title: "The PQ Protocol" },
+  { id: 4, title: "Comeback Logic" },
 ];
 
 const ACTIVITIES = [
-  { name: "Sunday Light", time: "8:00 AM", place: "Carva Auditorium" },
+  { name: "Sunday Light", time: "Sunday, 8:00 AM", place: "Carva Auditorium" },
   { name: "Charismatic Hour", time: "Tuesday, 6:00 PM", place: "Carva Auditorium" },
   { name: "Bible Study", time: "Thursday, 6:00 PM", place: "Carva Auditorium" },
 ];
 
 export function Footer({ onOpenStrategy }: FooterProps) {
   return (
-    <footer className="mt-5 mb-10 text-center animate-fade border-t border-slate-200 pt-10">
-      <div className="max-w-3xl mx-auto space-y-8">
-        <div className="app-panel rounded-2xl overflow-hidden shadow-sm text-left mb-8">
-          <div className="bg-slate-900 p-4">
-            <h3 className="text-white text-xs font-black uppercase tracking-[0.2em] italic">
-              Resurrection Blueprint
-            </h3>
-          </div>
-          <div className="p-2 space-y-1">
+    <footer className="mt-12 border-t border-[#e6e6e6] animate-fade">
+      <div className="max-w-[720px] mx-auto pt-10 pb-4 space-y-10">
+        <section>
+          <h3 className="card-title mb-4">Resurrection blueprint</h3>
+          <div className="flex flex-wrap gap-2">
             {BLUEPRINTS.map((item) => (
               <button
                 key={item.id}
                 onClick={() => onOpenStrategy(item.id)}
-                className="blueprint-item w-full text-left p-4 rounded-xl group"
+                className="blueprint-item h-9 px-4 text-sm font-medium text-[#0a0a0a] bg-[#ffffff] border border-[#8f8f8f]"
               >
-                <p className="text-[9px] font-black text-blue-600 uppercase mb-1">
-                  {item.strategy}
-                </p>
-                <h4 className="text-sm font-bold text-slate-800 group-hover:text-blue-700">
-                  {item.title}
-                </h4>
+                {item.title}
               </button>
             ))}
           </div>
-        </div>
+        </section>
 
-        <div className="space-y-2">
-          <p className="text-[10px] font-black text-slate-400 mt-9 uppercase tracking-[0.2em]">
-            Powered By
-          </p>
-          <h4 className="text-xl font-bold text-slate-900">
+        <section>
+          <h3 className="text-xl font-semibold text-[#0a0a0a] mb-1">
             Watchman Fellowship UNN
-          </h4>
-          <p className="text-sm italic text-slate-500 font-medium">
-            &quot;Sanctuary of reference&quot;
+          </h3>
+          <p className="text-sm text-[#6b6b6b]">
+            &quot;Sanctuary of reference.&quot; Pray like it all depends on God
+            and study like it depends on you.
           </p>
-        </div>
+        </section>
 
-        <div className="bg-slate-50 py-6 px-8 rounded-2xl border border-slate-100 italic font-semibold text-slate-700 text-base leading-relaxed">
-          &quot;Pray like it all depends on God and study like it depends on
-          you.&quot;
-        </div>
-
-        <div className="space-y-6 pt-4">
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">
-            Join us in our days of activities
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+        <section>
+          <h3 className="card-title mb-4">Join us in our days of activities</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {ACTIVITIES.map((activity) => (
-              <div
-                key={activity.name}
-                className="app-panel p-6 rounded-2xl shadow-sm border-slate-100"
-              >
-                <p className="text-sm font-black text-slate-900 mb-2 uppercase tracking-wide">
+              <div key={activity.name} className="app-panel p-5">
+                <p className="text-sm font-medium text-[#0a0a0a] mb-2">
                   {activity.name}
                 </p>
-                <div className="space-y-1">
-                  <p className="text-xs font-bold text-blue-600">
-                    {activity.time}
-                  </p>
-                  <p className="text-xs text-slate-600 font-medium">
-                    {activity.place}
-                  </p>
-                </div>
+                <p className="text-xs text-[#6b6b6b]">{activity.time}</p>
+                <p className="text-xs text-[#6b6b6b]">{activity.place}</p>
               </div>
             ))}
           </div>
-        </div>
+          <p className="text-sm text-[#0a0a0a] pt-6">
+            Come along with us and God will do you good.
+          </p>
+        </section>
 
-        <p className="text-base font-bold text-slate-800 pt-4">
-          Come along with us and God will do you GOOD!!
+        <p className="text-xs text-[#6b6b6b] pt-2">
+          Resurrect My GPA · 5.0 scale · Built by Watchman Fellowship UNN
         </p>
       </div>
     </footer>

@@ -1,6 +1,6 @@
 "use client";
 
-import { getClass, roadmapVerdict } from "@/lib/gpa";
+import { roadmapVerdict } from "@/lib/gpa";
 import type { RoadmapResult, RoadmapStep } from "@/lib/gpa";
 
 interface RoadmapSectionProps {
@@ -10,50 +10,64 @@ interface RoadmapSectionProps {
   onStepChange: (index: number, value: string) => void;
 }
 
+const VERDICT_PILL: Record<string, { bg: string; ink: string }> = {
+  "#2e7d32": { bg: "var(--pill-positive-bg)", ink: "var(--pill-positive-ink)" },
+  "#92400e": { bg: "var(--pill-warning-bg)", ink: "var(--pill-warning-ink)" },
+  "#c4242a": { bg: "var(--pill-negative-bg)", ink: "var(--pill-negative-ink)" },
+};
+
 export function RoadmapSection({
   steps,
   result,
   target,
   onStepChange,
 }: RoadmapSectionProps) {
-  const classInfo = getClass(result.final);
   const verdict = roadmapVerdict(result.gap);
+  const pill = VERDICT_PILL[verdict.color] ?? VERDICT_PILL["#92400e"];
   const gapText = `${result.gap >= 0 ? "+" : ""}${result.gap.toFixed(2)}`;
+  const gapOk = result.gap >= 0;
 
   return (
     <div
       id="roadmapSection"
-      className="app-panel p-8 rounded-2xl animate-fade shadow-sm"
+      className="app-panel p-6 animate-fade space-y-6"
     >
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-semibold text-slate-900">
-          Your Comeback Trail
-        </h2>
+      <div className="flex items-baseline justify-between gap-4">
+        <div>
+          <h2 className="card-title mb-1">Your comeback trail</h2>
+          <p className="text-xs text-[#6b6b6b]">
+            One average per semester, from level{" "}
+            {steps[0]?.level ?? ""} to {steps[steps.length - 1]?.level ?? ""}.
+          </p>
+        </div>
         <span
           id="roadmapFinalBadge"
-          className={`class-badge ${classInfo.style}`}
+          className="class-badge"
+          style={{ background: pill.bg, color: pill.ink }}
         >
-          {classInfo.name}
+          {verdict.label}
         </span>
       </div>
 
-      <div className="ml-6 space-y-8 relative" id="roadmapContainer">
+      <div id="roadmapContainer">
         {steps.map((step, index) => (
           <div
             key={step.level}
-            className="roadmap-step relative pl-4 pb-2 animate-fade"
+            className="roadmap-step relative pl-8 pb-5 last:pb-0 animate-fade"
           >
             <div className="roadmap-dot" />
-            <div className="flex justify-between items-center bg-slate-50 p-4 rounded-xl border border-slate-100">
-              <label className="text-xs font-bold text-slate-500 uppercase">
+            <div className="flex justify-between items-center gap-4 border-b border-[#f0f0f0] py-3">
+              <span className="mono-label text-sm text-[#3d3d3d]">
                 {step.level}
-              </label>
+              </span>
               <input
                 type="number"
                 step="0.01"
+                inputMode="decimal"
+                aria-label={`Target GPA for ${step.level}`}
                 value={step.value}
                 onChange={(e) => onStepChange(index, e.target.value)}
-                className="roadmap-input w-20 text-right bg-white border border-slate-200 rounded p-1 text-sm font-bold"
+                className="roadmap-input w-24 h-9 text-right bg-white border border-[#8f8f8f] rounded-md px-2 text-sm num focus:border-[#0a0a0a] outline-none"
               />
             </div>
           </div>
@@ -62,51 +76,39 @@ export function RoadmapSection({
 
       <div
         id="roadmapStatusBox"
-        className="mt-10 p-8 bg-slate-950 rounded-2xl text-white shadow-2xl border-l-8 border-slate-800"
-        style={{ borderLeftColor: verdict.color }}
+        className="border border-[#e6e6e6] rounded-lg p-6 no-shadow"
       >
-        <div className="flex justify-between items-start mb-6 border-b border-white/10 pb-4">
-          <div>
-            <p className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-1">
-              System Verdict
-            </p>
-            <h3
-              id="roadmapVerdict"
-              className="text-xl font-black italic uppercase tracking-tighter"
-            >
-              {verdict.label}
-            </h3>
-          </div>
-          <div className="text-right">
-            <p className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-1">
-              Point Gap
-            </p>
+        <div className="grid grid-cols-3 gap-6">
+          <div className="col-span-1">
+            <p className="text-xs text-[#6b6b6b] mb-2">Projected CGPA</p>
             <p
-              id="roadmapGap"
-              className="text-sm font-mono font-bold text-slate-300"
+              id="roadmapFinalGpa"
+              className="text-[30px] leading-none num text-[#1d5fbf]"
             >
-              {gapText}
-            </p>
-          </div>
-        </div>
-        <div className="flex justify-between items-end">
-          <div>
-            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">
-              Projected CGPA
-            </p>
-            <p id="roadmapFinalGpa" className="text-5xl font-black">
               {result.final.toFixed(2)}
             </p>
           </div>
-          <div className="text-right">
-            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">
-              Target
-            </p>
+          <div className="col-span-1">
+            <p className="text-xs text-[#6b6b6b] mb-2">Milestone</p>
             <p
               id="roadmapInitialTargetDisplay"
-              className="text-2xl font-bold opacity-30 italic"
+              className="text-[30px] leading-none num"
             >
               {target.toFixed(2)}
+            </p>
+          </div>
+          <div className="col-span-1 text-right">
+            <p className="text-xs text-[#6b6b6b] mb-2">
+              Point gap vs milestone
+            </p>
+            <p
+              id="roadmapGap"
+              className="text-[18px] leading-none num"
+              style={{
+                color: gapOk ? "var(--positive)" : "var(--negative)",
+              }}
+            >
+              {gapText}
             </p>
           </div>
         </div>

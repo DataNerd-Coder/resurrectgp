@@ -43,3 +43,9 @@ next-env.d.ts
 # legacy reference (original single-file app)
 /legacy/
 
+# opencode project skills (installed globally too; see ~/.config/opencode/skills)
+.opencode/
+
+# claude code
+.claude/
+
