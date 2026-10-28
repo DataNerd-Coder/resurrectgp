@@ -161,7 +161,7 @@ export function ResultsSection({
           onClick={onDownload}
           disabled={saving}
           aria-busy={saving}
-          className="flex-1 h-10 bg-[#141414] text-white text-sm font-medium rounded-md hover:bg-[#333333] active:bg-[#0a0a0a] transition bg-color disabled:opacity-60"
+          className="w-full sm:flex-1 h-10 bg-[#141414] text-white text-sm font-medium rounded-md hover:bg-[#333333] active:bg-[#0a0a0a] transition bg-color disabled:opacity-60"
         >
           {saving ? "Saving…" : "Save result"}
         </button>
