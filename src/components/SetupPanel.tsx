@@ -62,7 +62,7 @@ export function SetupPanel({
                   type="number"
                   step="0.01"
                   inputMode="decimal"
-                  placeholder="3.50"
+                  placeholder="e.g. 3.50"
                   value={value.currentGpa}
                   onChange={(e) => onChange({ currentGpa: e.target.value })}
                   className="input-focus field-input num"
@@ -76,7 +76,7 @@ export function SetupPanel({
                   id="totalUnitsPassed"
                   type="number"
                   inputMode="numeric"
-                  placeholder="Units before now"
+                  placeholder="e.g. 24"
                   value={value.totalUnitsPassed}
                   onChange={(e) =>
                     onChange({ totalUnitsPassed: e.target.value })
@@ -193,7 +193,7 @@ export function SetupPanel({
                 type="number"
                 step="0.01"
                 inputMode="decimal"
-                placeholder="3.00"
+                placeholder="e.g. 3.00"
                 value={value.roadmapCurrentGpa}
                 onChange={(e) =>
                   onChange({ roadmapCurrentGpa: e.target.value })
@@ -210,7 +210,7 @@ export function SetupPanel({
                 type="number"
                 step="0.01"
                 inputMode="decimal"
-                placeholder="4.50"
+                placeholder="e.g. 4.50"
                 value={value.roadmapTargetGpa}
                 onChange={(e) =>
                   onChange({ roadmapTargetGpa: e.target.value })

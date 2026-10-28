@@ -50,8 +50,10 @@ export function GpaApp() {
 
   const captureRef = useRef<HTMLDivElement>(null);
 
-  const updateSetup = (patch: Partial<SetupState>) =>
+  const updateSetup = (patch: Partial<SetupState>) => {
     setSetup((prev) => ({ ...prev, ...patch }));
+    setSetupError(null);
+  };
 
   const roadmapTarget = parseFloat(setup.roadmapTargetGpa) || 0;
   const roadmapCurrent = parseFloat(setup.roadmapCurrentGpa) || 0;
@@ -101,9 +103,22 @@ export function GpaApp() {
 
   const handleStart = () => {
     if (mode === "roadmap") {
+      const current = parseFloat(setup.roadmapCurrentGpa);
+      const milestone = parseFloat(setup.roadmapTargetGpa);
+
+      if (!setup.roadmapCurrentGpa.trim() || Number.isNaN(current)) {
+        setSetupError("Enter your current CGPA to build the trail.");
+        document.getElementById("roadmapCurrentGpa")?.focus();
+        return;
+      }
+      if (!setup.roadmapTargetGpa.trim() || Number.isNaN(milestone) || milestone <= 0) {
+        setSetupError("Enter the milestone CGPA you're aiming for.");
+        document.getElementById("roadmapTargetGpa")?.focus();
+        return;
+      }
       if (setup.toLevel <= setup.fromLevel) {
         setSetupError("Milestone level must come after the starting level.");
-        document.getElementById("roadmapInputs")?.scrollIntoView({ behavior: "smooth", block: "center" });
+        document.getElementById("toLevel")?.focus();
         return;
       }
       setSetupError(null);
@@ -112,6 +127,16 @@ export function GpaApp() {
       return;
     }
 
+    if (mode !== "result") {
+      const target = parseFloat(setup.targetGpa);
+      if (!setup.targetGpa.trim() || Number.isNaN(target) || target <= 0) {
+        setSetupError("Enter the GPA you're aiming for.");
+        document.getElementById("targetGpa")?.focus();
+        return;
+      }
+    }
+
+    setSetupError(null);
     setCourses(createCourses(setup.numCourses, mode));
     setShowCourseSection(true);
     setResult(null);
