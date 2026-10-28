@@ -22,7 +22,7 @@ export function Footer({ onOpenStrategy }: FooterProps) {
     <footer className="mt-12 border-t border-[#e6e6e6] animate-fade">
       <div className="pt-10 pb-4 space-y-10">
         <section>
-          <h3 className="card-title mb-4">Resurrection blueprint</h3>
+          <h3 className="card-title mb-4">Playbook</h3>
           <div className="flex flex-wrap gap-2">
             {BLUEPRINTS.map((item) => (
               <button
