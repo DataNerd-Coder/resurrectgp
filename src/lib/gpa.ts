@@ -138,26 +138,24 @@ const SCALE_MAX = 5.0;
 const round2 = (x: number) => Math.round(x * 100) / 100;
 
 /**
- * Build the comeback trail: one GPA per remaining semester that reaches the
+ * Build the comeback trail: one GPA per remaining semester on the way to the
  * milestone.
  *
- * The remaining semesters must average `need`; the trail is a progressive but
- * irregular climb inside the 3.70-4.80 band (real sessions do not step in
- * fixed +0.10 increments, so each interior step carries a small deterministic
- * wobble):
+ * The trail is a scatter, not a ramp. Real sessions swing in any order - a
+ * 4.2 here, a 5.0 there, a 4.8, then a 4.5 - so the plan is drawn as a
+ * realistic mix first and rescued second:
  *
- * - `need` at or below 3.70 - the milestone already sits inside a 3.7 rhythm:
- *   hold the floor flat and land at or above it (crossing is deliberate).
- * - `need` up to 4.25 - climb from 3.70, ending where the average lands it.
- * - `need` up to 4.50 - the high zone: the full 4.20-4.80 ramp, crossing the
- *   milestone, never leaving the band and never opening below 4.20.
- * - `need` up to 4.80 - a tighter 4.2x-4.80 climb that lands exactly.
- * - past 4.80 the band cannot average it: the strongest honest plan prescribes
- *   at most ONE 5.00 (the summit step) with the rest clamped inside the band,
- *   and the verdict reports the shortfall. Never a trail of straight fives.
+ * 1. Scatter - values ride a window of 0.60 around `need` (what the remaining
+ *    semesters must average), clamped to the 3.70-4.80 band. Two anchor
+ *    semesters pin the window edges so the mix truly swings, and a single
+ *    5.00 peak may join wherever it lands when the need is high enough to
+ *    invite it (never more than one).
+ * 2. Rescue - if the drawn mix would fall short of the milestone, the lowest
+ *    dropped semesters are stretched back up, capped at 4.80, until the
+ *    average lands at or above it. When even that cannot cover the gap the
+ *    trail stays as drawn and the verdict reports the distance.
  *
- * The trail never emits more than one 5.00, and rounding spill is absorbed by
- * the interior steps only.
+ * Deterministic: the same inputs always draw the same trail.
  */
 export function buildRoadmapSteps(
   from: number,
@@ -177,27 +175,77 @@ export function buildRoadmapSteps(
     return [step(LEVELS[from + 1], round2(Math.min(Math.max(need, 0), SCALE_MAX)))];
   }
 
-  let values: number[];
-  if (need <= TRAIL_FLOOR) {
-    // Hold the band floor; the trail lands at or above the milestone as-is.
-    values = Array.from({ length: n }, () => TRAIL_FLOOR);
-  } else if (need <= 4.25) {
-    values = jitteredRamp(TRAIL_FLOOR, Math.min(TRAIL_CEIL, 2 * need - TRAIL_FLOOR), n, seedFor(n, need));
-  } else if (need <= 4.5) {
-    // High but reachable: the fullest realistic band ramp, crossing upward.
-    values = jitteredRamp(4.2, TRAIL_CEIL, n, seedFor(n, need));
-  } else if (need <= TRAIL_CEIL) {
-    values = jitteredRamp(Math.max(4.2, 2 * need - TRAIL_CEIL), TRAIL_CEIL, n, seedFor(n, need));
-  } else {
-    // Past the band: one single 5.00 caps the summit, everything else stays
-    // inside 3.70-4.80, and the verdict reports whatever shortfall remains.
-    const m = n - 1;
-    const meanTarget = Math.min((need * n - 5) / m, TRAIL_CEIL);
-    const start = Math.min(TRAIL_CEIL, Math.max(4.2, 2 * meanTarget - TRAIL_CEIL));
-    values = [
-      ...jitteredRamp(start, TRAIL_CEIL, m, seedFor(n, need)),
-      5.0,
-    ];
+  // Deterministic scatter: same inputs always build the same trail.
+  let s = seedFor(n, need) >>> 0;
+  const rnd = () => {
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
+    return (s >>> 8) / 16777216;
+  };
+
+  // Play within 0.60 of the needed average, clamped to the band. When the
+  // need itself sits past the ceiling the window slides down to 4.20-4.80 so
+  // the mix still swings instead of collapsing into flat top gear.
+  const lo = Math.max(TRAIL_FLOOR, Math.min(need - 0.6, TRAIL_CEIL - 0.6));
+  const hi = Math.min(TRAIL_CEIL, need + 0.6);
+
+  // Up to one 5.00 peak, at a random spot, only where the need invites it.
+  const specials = new Map<number, number>();
+  const peakAt = need >= 4.4 ? Math.floor(rnd() * n) : -1;
+  if (peakAt >= 0) specials.set(peakAt, SCALE_MAX);
+
+  if (hi > lo) {
+    // Pin one semester at each window edge so the mix really swings.
+    const freeIndex = (taken: Set<number>) => {
+      for (let t = 0; t < 12; t += 1) {
+        const i = Math.floor(rnd() * n);
+        if (!taken.has(i)) return i;
+      }
+      for (let i = Math.floor(rnd() * n), t = 0; t < n; i = (i + 1) % n, t += 1) {
+        if (!taken.has(i)) return i;
+      }
+      return -1;
+    };
+    const taken = new Set(specials.keys());
+    const lowAt = freeIndex(taken);
+    if (lowAt >= 0) {
+      taken.add(lowAt);
+      specials.set(lowAt, lo);
+      const highAt = freeIndex(taken);
+      if (highAt >= 0) specials.set(highAt, hi);
+    }
+  }
+
+  const values: number[] = [];
+  for (let i = 0; i < n; i += 1) {
+    const fixed = specials.get(i);
+    values.push(fixed !== undefined ? round2(fixed) : round2(lo + rnd() * (hi - lo)));
+  }
+
+  // Rescue: stretch the lowest dropped semesters back up until the average
+  // meets the milestone. The 5.00 peak is never part of the lifting, and when
+  // the band cannot cover the shortfall the drawn mix stands as drawn - the
+  // verdict reports the distance.
+  let shortfall = Math.round((need * n - values.reduce((sum, v) => sum + v, 0)) * 100);
+  if (shortfall > 0) {
+    const liftable = values
+      .map((v, i) => ({ i, v }))
+      .filter(({ i }) => i !== peakAt)
+      .sort((a, b) => a.v - b.v);
+    const capacity = liftable.reduce(
+      (sum, { v }) => sum + Math.max(0, Math.round((TRAIL_CEIL - v) * 100)),
+      0,
+    );
+    if (capacity >= shortfall) {
+      let residual = shortfall;
+      for (const { i, v } of liftable) {
+        if (residual <= 0) break;
+        const room = Math.round((TRAIL_CEIL - v) * 100);
+        if (room <= 0) continue;
+        const lift = Math.min(room, residual);
+        values[i] = round2(v + lift / 100);
+        residual -= lift;
+      }
+    }
   }
 
   return values.map((value, i) => step(LEVELS[from + 1 + i], value));
@@ -208,69 +256,9 @@ function step(level: string, value: number): RoadmapStep {
   return { level, value: value.toFixed(2) };
 }
 
-/** Stable per-scenario jitter seed: same inputs always build the same trail. */
+/** Stable per-scenario scatter seed: same inputs always build the same trail. */
 function seedFor(n: number, need: number): number {
   return Math.imul(n, 131) + Math.round(need * 100) * 7;
-}
-
-/**
- * A progressive climb from `start` to `end` in `count` steps that wobbles like
- * real sessions instead of stepping in fixed +0.10 increments. The first and
- * last steps sit exactly on the anchors, interior steps deviate by a small
- * zero-sum jitter (so the ramp's mean is unchanged), every value rounds to
- * whole hundredths, and any rounding spill is absorbed by the interior steps
- * first, preserving band edges and monotonicity.
- */
-function jitteredRamp(
-  start: number,
-  end: number,
-  count: number,
-  seed: number,
-): number[] {
-  const values: number[] = [];
-  if (count < 2 || start >= end) {
-    for (let i = 0; i < count; i += 1) values.push(round2(start));
-    return values;
-  }
-
-  const span = end - start;
-  const gap = span / (count - 1);
-  const amp = Math.min(0.07, 0.6 * gap); // wobble never inverts the climb
-
-  // Deterministic LCG jitter, zero-summed over the interior steps.
-  let s = (Math.imul(seed, 2246822519) ^ 0x7feb352d) >>> 0;
-  const rnd = () => {
-    s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
-    return (s >>> 8) / 16777216;
-  };
-  const g: number[] = [];
-  for (let i = 1; i < count - 1; i += 1) g.push(rnd());
-  const gMean = g.length > 0 ? g.reduce((sum, x) => sum + x, 0) / g.length : 0;
-
-  for (let i = 0; i < count; i += 1) {
-    const lin = start + gap * i;
-    const z = i > 0 && i < count - 1 ? amp * (g[i - 1] - gMean) : 0;
-    values.push(round2(lin + z));
-  }
-
-  // Absorb quantisation spill in the interior steps only.
-  const mean = (start + end) / 2;
-  let residual = Math.round((mean * count - values.reduce((sum, v) => sum + v, 0)) * 100);
-  for (let pass = 0; residual !== 0 && pass < 2; pass += 1) {
-    for (let i = 1; i < count - 1 && residual !== 0; i += 1) {
-      const bumped = round2(values[i] + Math.sign(residual) / 100);
-      if (
-        bumped >= start &&
-        bumped <= end &&
-        bumped >= values[i - 1] &&
-        bumped <= values[i + 1]
-      ) {
-        values[i] = bumped;
-        residual -= Math.sign(residual);
-      }
-    }
-  }
-  return values;
 }
 
 /**
