@@ -130,25 +130,43 @@ export function simulateTarget(
   return working;
 }
 
-/** First-class band the comeback trail prescribes inside, and the scale cap. */
-const TRAIL_FLOOR = 4.0;
-const TRAIL_CEIL = 4.7;
+/** The band the comeback trail prescribes inside, and the scale cap. */
+const TRAIL_FLOOR = 3.7;
+const TRAIL_CEIL = 4.8;
 const SCALE_MAX = 5.0;
 
 const round2 = (x: number) => Math.round(x * 100) / 100;
 
+/** Interior step indexes of an n-step trail; only those may absorb rounding. */
+function interiorIndices(n: number): number[] {
+  const out: number[] = [];
+  for (let i = 1; i < n - 1; i += 1) out.push(i);
+  return out;
+}
+
 /**
- * Build the comeback trail: one GPA per remaining semester that lands the
- * cumulative CGPA exactly on the milestone.
+ * Build the comeback trail: one GPA per remaining semester that reaches the
+ * milestone.
  *
- * The remaining semesters must average `need`; the trail spreads that average
- * as the widest ramp the first-class band allows - early semesters take the
- * lighter end and the plan climbs (or, on an easy milestone, banks a strong
- * open and tapers). The band compresses toward 4.70 as `need` rises, past the
- * ceiling the ramp climbs toward 5.00, and past the cap the only honest answer
- * is flat 5.00s, which the verdict then reports as out of reach. When the
- * milestone already sits within reach the ramp descends from 4.00 instead.
- * The last step re-solves the exact figure so the projection lands on target.
+ * The remaining semesters must average `need`; the trail spreads that spread
+ * across five honest zones:
+ *
+ * - `need` at or below 3.70 - the milestone already sits inside a 3.7 rhythm,
+ *   so the trail holds the floor flat and lands at or above it (crossing is
+ *   deliberate; no contorting to land exactly).
+ * - `need` up to 4.25 - mirror anchored low: 3.70 out to 2*need-3.70, landing
+ *   exactly.
+ * - `need` up to 4.50 - the high zone: the trail takes the widest realistic
+ *   ramp, 4.20 through 4.80, which crosses the milestone from above.
+ * - `need` up to 4.80 - mirror anchored high: 2*need-4.80 through 4.80, landing
+ *   exactly, and always starting at or above 4.20.
+ * - past 4.80 the band cannot average it, so the ramp climbs toward 5.00, and
+ *   past ~4.925 the only honest answer is flat 5.00s (the verdict marks it red).
+ *
+ * Values quantise to whole hundredths and the rounding spill is absorbed by the
+ * interior steps (largest-remainder style), so no step ever pokes a decimal
+ * above the zone's ceiling, and the first step sits exactly on the zone's
+ * starting figure.
  */
 export function buildRoadmapSteps(
   from: number,
@@ -165,42 +183,66 @@ export function buildRoadmapSteps(
 
   let start: number;
   let end: number;
+  let mean: number;
   if (n === 1) {
     // A single semester cannot mix; the figure needed is the figure needed.
-    start = end = round2(Math.min(Math.max(need, 0), SCALE_MAX));
-  } else if (need <= 2.4) {
-    // The milestone is a coast: hold one modest flat rhythm.
-    start = end = round2(Math.min(Math.max(need, 0), SCALE_MAX));
+    start = end = mean = round2(Math.min(Math.max(need, 0), SCALE_MAX));
   } else if (need <= TRAIL_FLOOR) {
-    // Within reach: open at the first-class floor, taper as the average banks.
+    // Hold the floor: the trail lands at or above the milestone as-is.
+    start = end = TRAIL_FLOOR;
+    mean = TRAIL_FLOOR;
+  } else if (need <= 4.25) {
+    // Mirror anchored low, landing exactly on the milestone.
     start = TRAIL_FLOOR;
-    end = Math.max(round2(2 * need - TRAIL_FLOOR), 2.4);
-  } else {
-    // Above the floor: mirror `need` across the widest ramp that averages it.
+    end = round2(2 * need - TRAIL_FLOOR);
+    mean = need;
+  } else if (need <= 4.5) {
+    // High but reachable: widest realistic ramp, crossing the milestone.
+    start = 4.2;
+    end = TRAIL_CEIL;
+    mean = 4.5;
+  } else if (need <= TRAIL_CEIL) {
+    // Mirror anchored high, landing exactly, and starting at or above 4.20.
     start = round2(2 * need - TRAIL_CEIL);
     end = TRAIL_CEIL;
-    if (start < TRAIL_FLOOR) {
-      start = TRAIL_FLOOR;
-      end = round2(2 * need - start);
-    }
-    if (end > SCALE_MAX) {
-      end = SCALE_MAX;
-      start = round2(2 * need - SCALE_MAX);
-    }
-    if (start > SCALE_MAX) {
-      // Even a perfect scale cannot reach the milestone from here.
-      start = end = SCALE_MAX;
-    }
+    mean = need;
+  } else {
+    // Past the band: climb toward a perfect scale; past the cap, hold flat 5s
+    // and let the verdict call the trail out of reach.
+    end = SCALE_MAX;
+    start = round2(2 * need - SCALE_MAX);
+    mean = need;
+    if (start > SCALE_MAX) start = end = SCALE_MAX;
   }
 
+  const floorEdge = Math.min(start, end);
+  const ceilEdge = Math.max(start, end);
   const values: number[] = [];
-  for (let i = 0; i < n - 1; i += 1) {
-    values.push(round2(start + ((end - start) * i) / (n - 1)));
+  for (let i = 0; i < n; i += 1) {
+    const raw = n === 1 ? start : start + ((end - start) * i) / (n - 1);
+    values.push(round2(raw));
   }
-  // The final step re-solves so the cumulative CGPA lands on the milestone.
-  const earlierPoints = values.reduce((sum, v) => sum + v * 20, 0);
-  const lastTarget = target * (doneUnits + 20 * n) - currentGpa * doneUnits - earlierPoints;
-  values.push(round2(Math.min(Math.max(lastTarget / 20, 0), SCALE_MAX)));
+  if (start !== end) {
+    // Absorb the quantisation spill in the interior steps so no step crosses
+    // the zone edges and the first step keeps its exact anchor figure.
+    let residual = Math.round((mean * n - values.reduce((s, v) => s + v, 0)) * 100);
+    for (let pass = 0; residual !== 0 && pass < 2 && pass < n; pass += 1) {
+      for (const i of interiorIndices(n)) {
+        if (residual === 0) break;
+        const v = values[i];
+        const bumped = round2(v + Math.sign(residual) / 100);
+        const room =
+          bumped >= floorEdge &&
+          bumped <= ceilEdge &&
+          bumped >= values[i - 1] &&
+          bumped <= values[i + 1];
+        if (room) {
+          values[i] = bumped;
+          residual -= Math.sign(residual);
+        }
+      }
+    }
+  }
 
   return values.map((value, i) => ({
     level: LEVELS[from + 1 + i],
