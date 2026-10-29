@@ -80,7 +80,7 @@ export function BlueprintModal({ strategyId, onClose }: BlueprintModalProps) {
         ref={panelRef}
         className="bg-white w-full max-w-xl rounded-lg overflow-hidden animate-fade relative max-h-[85vh] flex flex-col"
         style={{
-          boxShadow: "var(--shadow-panel), 0 0 0 1px rgba(21,38,76,0.06)",
+          boxShadow: "var(--shadow-dialog), 0 0 0 1px rgba(21,38,76,0.06)",
           background: "linear-gradient(180deg, #ffffff 0%, #fafbfe 100%)",
         }}
       >

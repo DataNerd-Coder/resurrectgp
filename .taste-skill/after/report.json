@@ -1,6 +1,6 @@
 {
  "url": "http://localhost:3000",
- "at": "2026-10-28T21:03:31.311Z",
+ "at": "2026-10-29T20:36:23.423Z",
  "allow": [],
  "viewports": [
   {
@@ -9,8 +9,8 @@
    "load": "load",
    "screens": 2,
    "filled": [
-    0.33,
-    0.34
+    0.29,
+    0.39
    ],
    "motion": {
     "elements": 4,
@@ -26,8 +26,8 @@
      "h": 900
     },
     "page": {
-     "height": 1030,
-     "screens": 1.1,
+     "height": 1039,
+     "screens": 1.2,
      "words": 117,
      "img": 0,
      "video": 0,
@@ -53,12 +53,12 @@
      "words": 3,
      "chars": 18,
      "lines": 1,
-     "size": 24,
-     "vw": 1.7,
+     "size": 32,
+     "vw": 2.2,
      "font": "Geist",
      "weight": 600,
-     "tracking": -0.01,
-     "leading": 1.33,
+     "tracking": -0.02,
+     "leading": 1.15,
      "top": 20,
      "tag": "h1",
      "kind": "heading",
@@ -69,13 +69,35 @@
      "text": "Resurrect Your GPA",
      "words": 3,
      "lines": 1,
-     "size": 24,
+     "size": 32,
      "font": "Geist"
     },
-    "headings": [],
+    "headings": [
+     {
+      "text": "Resurrect Your GPA",
+      "words": 3,
+      "chars": 18,
+      "lines": 1,
+      "size": 32,
+      "vw": 2.2,
+      "font": "Geist",
+      "weight": 600,
+      "tracking": -0.02,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.29,
+      "top": 20,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
     "headingSummary": {
-     "count": 0,
-     "maxLines": 0,
+     "count": 1,
+     "maxLines": 1,
      "over2Lines": 0,
      "statements": 0,
      "centered": 0,
@@ -96,22 +118,22 @@
       14,
       16,
       20,
-      24
+      32
      ],
      "sizeCount": 5,
      "notLoaded": [],
      "body": {
       "font": "Geist",
-      "size": 12,
-      "leading": 1.33,
+      "size": 14,
+      "leading": 1.43,
       "weight": 400,
       "tracking": 0,
-      "contrast": 4.8
+      "contrast": null
      },
      "measureChars": 73,
      "max": {
-      "size": 24,
-      "vw": 1.7,
+      "size": 32,
+      "vw": 2.2,
       "font": "Geist",
       "text": "Resurrect Your GPA"
      },
@@ -124,7 +146,7 @@
      "microSamples": [],
      "upperShare": 0.01,
      "centerShare": 0.17,
-     "smallText": 10
+     "smallText": 9
     },
     "eyebrows": [],
     "numbered": [],
@@ -180,9 +202,14 @@
      ]
     },
     "surfaces": {
-     "shadowStatic": 0,
+     "shadowStatic": 4,
      "shadowOverlay": 0,
-     "shadowSamples": [],
+     "shadowSamples": [
+      "div#setupPanel.app-panel.p-6 → rgba(21, 38, 76, 0.04) 0px 1px 2px 0px, rgba(21, 38, 76, 0.06) 0px 6px 16px -8px",
+      "div.app-panel.p-5 → rgba(21, 38, 76, 0.04) 0px 1px 2px 0px, rgba(21, 38, 76, 0.06) 0px 6px 16px -8px",
+      "div.app-panel.p-5 → rgba(21, 38, 76, 0.04) 0px 1px 2px 0px, rgba(21, 38, 76, 0.06) 0px 6px 16px -8px",
+      "div.app-panel.p-5 → rgba(21, 38, 76, 0.04) 0px 1px 2px 0px, rgba(21, 38, 76, 0.06) 0px 6px 16px -8px"
+     ],
      "gradients": 0,
      "scrims": 0,
      "gradientSamples": [],
@@ -206,7 +233,7 @@
        "count": 3,
        "iconTopped": false,
        "rounded": true,
-       "top": 740
+       "top": 749
       }
      ]
     },
@@ -214,7 +241,7 @@
     "nav": {
      "links": 0,
      "fixed": false,
-     "height": 52,
+     "height": 61,
      "floatingPill": false,
      "blur": false
     },
@@ -228,7 +255,7 @@
      "w": 1440,
      "h": 900
     },
-    "pageH": 1030,
+    "pageH": 1039,
     "margins": {
      "left": 200,
      "right": 217
@@ -237,7 +264,7 @@
      {
       "sel": "main.mt-6.space-y-5",
       "tag": "main",
-      "top": 161,
+      "top": 170,
       "height": 218,
       "words": 12,
       "media": 0,
@@ -260,7 +287,7 @@
      {
       "sel": "footer.mt-12.border-t",
       "tag": "footer",
-      "top": 427,
+      "top": 436,
       "height": 539,
       "words": 82,
       "media": 0,
@@ -285,7 +312,7 @@
     "h1s": [
      {
       "text": "Resurrect Your GPA",
-      "size": 24,
+      "size": 32,
       "top": 20,
       "firstScreen": true
      }
@@ -294,24 +321,24 @@
     "edges": [
      {
       "x": 200,
-      "n": 1
+      "n": 2
      },
      {
       "x": 225,
       "n": 1
      }
     ],
-    "leftBlocks": 2,
+    "leftBlocks": 3,
     "bodySize": 14,
     "stage": false,
     "explains": false,
     "slivers": [],
-    "voidShare": 0.17,
+    "voidShare": 0.14,
     "voidBox": {
      "x": 840,
-     "y": 360,
+     "y": 420,
      "w": 600,
-     "h": 360
+     "h": 300
     }
    },
    "app": {
@@ -332,12 +359,12 @@
      "words": 3,
      "chars": 18,
      "lines": 1,
-     "size": 24,
-     "vw": 1.7,
+     "size": 32,
+     "vw": 2.2,
      "font": "Geist",
      "weight": 600,
-     "tracking": -0.01,
-     "leading": 1.33,
+     "tracking": -0.02,
+     "leading": 1.15,
      "top": 20,
      "tag": "h1",
      "kind": "heading",
@@ -367,7 +394,7 @@
      "heavyBorders": 0,
      "borderSamples": [],
      "heavyShadows": 0,
-     "softShadows": 0,
+     "softShadows": 12,
      "shadowSamples": [],
      "glass": 0
     },
@@ -387,7 +414,7 @@
     "chartHues": 0,
     "placeholders": [],
     "type": {
-     "under13": 0.37,
+     "under13": 0.28,
      "tiny": 0,
      "tinySamples": [],
      "sizes": [
@@ -395,12 +422,12 @@
       14,
       16,
       20,
-      24
+      32
      ]
     },
     "title": {
      "text": "Resurrect Your GPA",
-     "size": 24,
+     "size": 32,
      "top": 20
     },
     "colourShare": 0
@@ -413,7 +440,7 @@
    "load": "load",
    "screens": 2,
    "filled": [
-    0.41,
+    0.39,
     0.39
    ],
    "motion": {
@@ -430,7 +457,7 @@
      "h": 1024
     },
     "page": {
-     "height": 1030,
+     "height": 1039,
      "screens": 1,
      "words": 117,
      "img": 0,
@@ -457,12 +484,12 @@
      "words": 3,
      "chars": 18,
      "lines": 1,
-     "size": 24,
-     "vw": 3.1,
+     "size": 32,
+     "vw": 4.2,
      "font": "Geist",
      "weight": 600,
-     "tracking": -0.01,
-     "leading": 1.33,
+     "tracking": -0.02,
+     "leading": 1.15,
      "top": 20,
      "tag": "h1",
      "kind": "heading",
@@ -473,13 +500,35 @@
      "text": "Resurrect Your GPA",
      "words": 3,
      "lines": 1,
-     "size": 24,
+     "size": 32,
      "font": "Geist"
     },
-    "headings": [],
+    "headings": [
+     {
+      "text": "Resurrect Your GPA",
+      "words": 3,
+      "chars": 18,
+      "lines": 1,
+      "size": 32,
+      "vw": 4.2,
+      "font": "Geist",
+      "weight": 600,
+      "tracking": -0.02,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.54,
+      "top": 20,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
     "headingSummary": {
-     "count": 0,
-     "maxLines": 0,
+     "count": 1,
+     "maxLines": 1,
      "over2Lines": 0,
      "statements": 0,
      "centered": 0,
@@ -500,22 +549,22 @@
       14,
       16,
       20,
-      24
+      32
      ],
      "sizeCount": 5,
      "notLoaded": [],
      "body": {
       "font": "Geist",
-      "size": 12,
-      "leading": 1.33,
+      "size": 14,
+      "leading": 1.43,
       "weight": 400,
       "tracking": 0,
-      "contrast": 4.8
+      "contrast": null
      },
      "measureChars": 73,
      "max": {
-      "size": 24,
-      "vw": 3.1,
+      "size": 32,
+      "vw": 4.2,
       "font": "Geist",
       "text": "Resurrect Your GPA"
      },
@@ -528,7 +577,7 @@
      "microSamples": [],
      "upperShare": 0.01,
      "centerShare": 0.17,
-     "smallText": 10
+     "smallText": 9
     },
     "eyebrows": [],
     "numbered": [],
@@ -584,9 +633,14 @@
      ]
     },
     "surfaces": {
-     "shadowStatic": 0,
+     "shadowStatic": 4,
      "shadowOverlay": 0,
-     "shadowSamples": [],
+     "shadowSamples": [
+      "div#setupPanel.app-panel.p-6 → rgba(21, 38, 76, 0.04) 0px 1px 2px 0px, rgba(21, 38, 76, 0.06) 0px 6px 16px -8px",
+      "div.app-panel.p-5 → rgba(21, 38, 76, 0.04) 0px 1px 2px 0px, rgba(21, 38, 76, 0.06) 0px 6px 16px -8px",
+      "div.app-panel.p-5 → rgba(21, 38, 76, 0.04) 0px 1px 2px 0px, rgba(21, 38, 76, 0.06) 0px 6px 16px -8px",
+      "div.app-panel.p-5 → rgba(21, 38, 76, 0.04) 0px 1px 2px 0px, rgba(21, 38, 76, 0.06) 0px 6px 16px -8px"
+     ],
      "gradients": 0,
      "scrims": 0,
      "gradientSamples": [],
@@ -610,7 +664,7 @@
        "count": 3,
        "iconTopped": false,
        "rounded": true,
-       "top": 740
+       "top": 749
       }
      ]
     },
@@ -618,7 +672,7 @@
     "nav": {
      "links": 0,
      "fixed": false,
-     "height": 52,
+     "height": 61,
      "floatingPill": false,
      "blur": false
     },
@@ -632,7 +686,7 @@
      "w": 768,
      "h": 1024
     },
-    "pageH": 1030,
+    "pageH": 1039,
     "margins": {
      "left": 24,
      "right": 41
@@ -641,7 +695,7 @@
      {
       "sel": "main.mt-6.space-y-5",
       "tag": "main",
-      "top": 161,
+      "top": 170,
       "height": 218,
       "words": 12,
       "media": 0,
@@ -664,7 +718,7 @@
      {
       "sel": "footer.mt-12.border-t",
       "tag": "footer",
-      "top": 427,
+      "top": 436,
       "height": 539,
       "words": 82,
       "media": 0,
@@ -689,7 +743,7 @@
     "h1s": [
      {
       "text": "Resurrect Your GPA",
-      "size": 24,
+      "size": 32,
       "top": 20,
       "firstScreen": true
      }
@@ -698,14 +752,14 @@
     "edges": [
      {
       "x": 24,
-      "n": 1
+      "n": 2
      },
      {
       "x": 49,
       "n": 1
      }
     ],
-    "leftBlocks": 2,
+    "leftBlocks": 3,
     "bodySize": 14,
     "stage": false,
     "explains": false,
@@ -731,12 +785,12 @@
      "words": 3,
      "chars": 18,
      "lines": 1,
-     "size": 24,
-     "vw": 3.1,
+     "size": 32,
+     "vw": 4.2,
      "font": "Geist",
      "weight": 600,
-     "tracking": -0.01,
-     "leading": 1.33,
+     "tracking": -0.02,
+     "leading": 1.15,
      "top": 20,
      "tag": "h1",
      "kind": "heading",
@@ -766,7 +820,7 @@
      "heavyBorders": 0,
      "borderSamples": [],
      "heavyShadows": 0,
-     "softShadows": 0,
+     "softShadows": 12,
      "shadowSamples": [],
      "glass": 0
     },
@@ -786,7 +840,7 @@
     "chartHues": 0,
     "placeholders": [],
     "type": {
-     "under13": 0.37,
+     "under13": 0.28,
      "tiny": 0,
      "tinySamples": [],
      "sizes": [
@@ -794,12 +848,12 @@
       14,
       16,
       20,
-      24
+      32
      ]
     },
     "title": {
      "text": "Resurrect Your GPA",
-     "size": 24,
+     "size": 32,
      "top": 20
     },
     "colourShare": 0
@@ -812,7 +866,7 @@
    "load": "load",
    "screens": 2,
    "filled": [
-    0.46,
+    0.47,
     0.36
    ],
    "motion": {
@@ -829,7 +883,7 @@
      "h": 844
     },
     "page": {
-     "height": 1418,
+     "height": 1419,
      "screens": 1.7,
      "words": 117,
      "img": 0,
@@ -856,12 +910,12 @@
      "words": 3,
      "chars": 18,
      "lines": 1,
-     "size": 24,
-     "vw": 6.2,
+     "size": 26,
+     "vw": 6.7,
      "font": "Geist",
      "weight": 600,
-     "tracking": -0.01,
-     "leading": 1.33,
+     "tracking": -0.02,
+     "leading": 1.25,
      "top": 20,
      "tag": "h1",
      "kind": "heading",
@@ -872,7 +926,7 @@
      "text": "Resurrect Your GPA",
      "words": 3,
      "lines": 1,
-     "size": 24,
+     "size": 26,
      "font": "Geist"
     },
     "headings": [
@@ -881,12 +935,12 @@
       "words": 3,
       "chars": 18,
       "lines": 1,
-      "size": 24,
-      "vw": 6.2,
+      "size": 26,
+      "vw": 6.7,
       "font": "Geist",
       "weight": 600,
-      "tracking": -0.01,
-      "leading": 1.33,
+      "tracking": -0.02,
+      "leading": 1.25,
       "upper": false,
       "italic": false,
       "mono": false,
@@ -921,7 +975,7 @@
       14,
       16,
       20,
-      24
+      26
      ],
      "sizeCount": 5,
      "notLoaded": [],
@@ -931,12 +985,12 @@
       "leading": 1.33,
       "weight": 400,
       "tracking": 0,
-      "contrast": 4.8
+      "contrast": null
      },
      "measureChars": 51,
      "max": {
-      "size": 24,
-      "vw": 6.2,
+      "size": 26,
+      "vw": 6.7,
       "font": "Geist",
       "text": "Resurrect Your GPA"
      },
@@ -964,7 +1018,7 @@
      "sectionBgs": [
       {
        "color": "#ffffff",
-       "top": 177,
+       "top": 178,
        "hsl": {
         "h": 0,
         "s": 0,
@@ -1015,9 +1069,14 @@
      ]
     },
     "surfaces": {
-     "shadowStatic": 0,
+     "shadowStatic": 4,
      "shadowOverlay": 0,
-     "shadowSamples": [],
+     "shadowSamples": [
+      "div#setupPanel.app-panel.p-6 → rgba(21, 38, 76, 0.04) 0px 1px 2px 0px, rgba(21, 38, 76, 0.06) 0px 6px 16px -8px",
+      "div.app-panel.p-5 → rgba(21, 38, 76, 0.04) 0px 1px 2px 0px, rgba(21, 38, 76, 0.06) 0px 6px 16px -8px",
+      "div.app-panel.p-5 → rgba(21, 38, 76, 0.04) 0px 1px 2px 0px, rgba(21, 38, 76, 0.06) 0px 6px 16px -8px",
+      "div.app-panel.p-5 → rgba(21, 38, 76, 0.04) 0px 1px 2px 0px, rgba(21, 38, 76, 0.06) 0px 6px 16px -8px"
+     ],
      "gradients": 0,
      "scrims": 0,
      "gradientSamples": [],
@@ -1042,7 +1101,7 @@
     "nav": {
      "links": 0,
      "fixed": false,
-     "height": 68,
+     "height": 69,
      "floatingPill": false,
      "blur": false
     },
@@ -1056,7 +1115,7 @@
      "w": 390,
      "h": 844
     },
-    "pageH": 1418,
+    "pageH": 1419,
     "margins": {
      "left": 16,
      "right": 19
@@ -1065,7 +1124,7 @@
      {
       "sel": "main.mt-6.space-y-5",
       "tag": "main",
-      "top": 177,
+      "top": 178,
       "height": 298,
       "words": 12,
       "media": 0,
@@ -1088,7 +1147,7 @@
      {
       "sel": "footer.mt-12.border-t",
       "tag": "footer",
-      "top": 523,
+      "top": 524,
       "height": 831,
       "words": 82,
       "media": 0,
@@ -1113,7 +1172,7 @@
     "h1s": [
      {
       "text": "Resurrect Your GPA",
-      "size": 24,
+      "size": 26,
       "top": 20,
       "firstScreen": true
      }
@@ -1155,12 +1214,12 @@
      "words": 3,
      "chars": 18,
      "lines": 1,
-     "size": 24,
-     "vw": 6.2,
+     "size": 26,
+     "vw": 6.7,
      "font": "Geist",
      "weight": 600,
-     "tracking": -0.01,
-     "leading": 1.33,
+     "tracking": -0.02,
+     "leading": 1.25,
      "top": 20,
      "tag": "h1",
      "kind": "heading",
@@ -1190,7 +1249,7 @@
      "heavyBorders": 0,
      "borderSamples": [],
      "heavyShadows": 0,
-     "softShadows": 0,
+     "softShadows": 12,
      "shadowSamples": [],
      "glass": 0
     },
@@ -1218,12 +1277,12 @@
       14,
       16,
       20,
-      24
+      26
      ]
     },
     "title": {
      "text": "Resurrect Your GPA",
-     "size": 24,
+     "size": 26,
      "top": 20
     },
     "colourShare": 0

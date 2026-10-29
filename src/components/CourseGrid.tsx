@@ -97,7 +97,7 @@ export function CourseGrid({
 
       <button
         onClick={onCalculate}
-        className="btn-elevated mt-6 w-full h-10 bg-[#141414] text-white text-sm font-medium rounded-md hover:bg-[#333333] active:bg-[#0a0a0a] transition bg-color"
+        className="mt-6 w-full h-10 bg-[#141414] text-white text-sm font-medium rounded-md hover:bg-[#333333] active:bg-[#0a0a0a] transition bg-color"
       >
         {mode === "result" ? "Compute result" : "Calculate comeback"}
       </button>
