@@ -116,13 +116,20 @@ export function GpaApp() {
         document.getElementById("roadmapTargetGpa")?.focus();
         return;
       }
+      if (milestone > 5) {
+        setSetupError("The scale tops out at 5.00 - enter a milestone at or below 5.00.");
+        document.getElementById("roadmapTargetGpa")?.focus();
+        return;
+      }
       if (setup.toLevel <= setup.fromLevel) {
         setSetupError("Milestone level must come after the starting level.");
         document.getElementById("toLevel")?.focus();
         return;
       }
       setSetupError(null);
-      setRoadmapSteps(buildRoadmapSteps(setup.fromLevel, setup.toLevel));
+      setRoadmapSteps(
+        buildRoadmapSteps(setup.fromLevel, setup.toLevel, current, milestone),
+      );
       setShowRoadmap(true);
       return;
     }

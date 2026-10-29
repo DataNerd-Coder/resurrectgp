@@ -37,7 +37,15 @@ export function RoadmapSection({
           <h2 className="card-title mb-1">Your comeback trail</h2>
           <p className="text-xs text-[#6b6b6b]">
             One average per semester, from level{" "}
-            {steps[0]?.level ?? ""} to {steps[steps.length - 1]?.level ?? ""}.
+            {steps[0]?.level ?? ""} to {steps[steps.length - 1]?.level ?? ""}. To land on{" "}
+            {target.toFixed(2)}, these average{" "}
+            <span className="num text-[#3d3d3d]">
+              {(
+                steps.reduce((sum, s) => sum + (parseFloat(s.value) || 0), 0) /
+                (steps.length || 1)
+              ).toFixed(2)}
+            </span>
+            .
           </p>
         </div>
         <span

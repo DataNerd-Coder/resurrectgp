@@ -130,13 +130,82 @@ export function simulateTarget(
   return working;
 }
 
-/** Build a roadmap step for every level between `from` and `to` (exclusive of from). */
-export function buildRoadmapSteps(from: number, to: number): RoadmapStep[] {
-  const steps: RoadmapStep[] = [];
-  for (let i = 1; i <= to - from; i += 1) {
-    steps.push({ level: LEVELS[from + i], value: "4.00" });
+/** First-class band the comeback trail prescribes inside, and the scale cap. */
+const TRAIL_FLOOR = 4.0;
+const TRAIL_CEIL = 4.7;
+const SCALE_MAX = 5.0;
+
+const round2 = (x: number) => Math.round(x * 100) / 100;
+
+/**
+ * Build the comeback trail: one GPA per remaining semester that lands the
+ * cumulative CGPA exactly on the milestone.
+ *
+ * The remaining semesters must average `need`; the trail spreads that average
+ * as the widest ramp the first-class band allows - early semesters take the
+ * lighter end and the plan climbs (or, on an easy milestone, banks a strong
+ * open and tapers). The band compresses toward 4.70 as `need` rises, past the
+ * ceiling the ramp climbs toward 5.00, and past the cap the only honest answer
+ * is flat 5.00s, which the verdict then reports as out of reach. When the
+ * milestone already sits within reach the ramp descends from 4.00 instead.
+ * The last step re-solves the exact figure so the projection lands on target.
+ */
+export function buildRoadmapSteps(
+  from: number,
+  to: number,
+  currentGpa: number,
+  target: number,
+): RoadmapStep[] {
+  const n = to - from;
+  if (n < 1) return [];
+
+  const doneUnits = (from + 1) * 20;
+  const need =
+    (target * (doneUnits + 20 * n) - currentGpa * doneUnits) / (20 * n);
+
+  let start: number;
+  let end: number;
+  if (n === 1) {
+    // A single semester cannot mix; the figure needed is the figure needed.
+    start = end = round2(Math.min(Math.max(need, 0), SCALE_MAX));
+  } else if (need <= 2.4) {
+    // The milestone is a coast: hold one modest flat rhythm.
+    start = end = round2(Math.min(Math.max(need, 0), SCALE_MAX));
+  } else if (need <= TRAIL_FLOOR) {
+    // Within reach: open at the first-class floor, taper as the average banks.
+    start = TRAIL_FLOOR;
+    end = Math.max(round2(2 * need - TRAIL_FLOOR), 2.4);
+  } else {
+    // Above the floor: mirror `need` across the widest ramp that averages it.
+    start = round2(2 * need - TRAIL_CEIL);
+    end = TRAIL_CEIL;
+    if (start < TRAIL_FLOOR) {
+      start = TRAIL_FLOOR;
+      end = round2(2 * need - start);
+    }
+    if (end > SCALE_MAX) {
+      end = SCALE_MAX;
+      start = round2(2 * need - SCALE_MAX);
+    }
+    if (start > SCALE_MAX) {
+      // Even a perfect scale cannot reach the milestone from here.
+      start = end = SCALE_MAX;
+    }
   }
-  return steps;
+
+  const values: number[] = [];
+  for (let i = 0; i < n - 1; i += 1) {
+    values.push(round2(start + ((end - start) * i) / (n - 1)));
+  }
+  // The final step re-solves so the cumulative CGPA lands on the milestone.
+  const earlierPoints = values.reduce((sum, v) => sum + v * 20, 0);
+  const lastTarget = target * (doneUnits + 20 * n) - currentGpa * doneUnits - earlierPoints;
+  values.push(round2(Math.min(Math.max(lastTarget / 20, 0), SCALE_MAX)));
+
+  return values.map((value, i) => ({
+    level: LEVELS[from + 1 + i],
+    value: value.toFixed(2),
+  }));
 }
 
 /**
