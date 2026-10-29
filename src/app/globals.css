@@ -1,0 +1,264 @@
+@import "tailwindcss";
+
+/* Achromatic ledger — dealt style (see .taste-skill/direction.json).
+   The chrome holds no colour; the one chart hue #1d5fbf lives only on the
+   screen's main data element (projected GPA, target marks). */
+
+:root {
+  --ground: #f2f4f7;
+  --surface: #ffffff;
+  --raised: #eeeeee;
+  --border: #e6e6e6;
+  --rule: #f0f0f0;
+  /* Interactive control boundaries (inputs, selects, outlined buttons).
+     3.2:1 on white so a control is identifiable by its edge alone. */
+  --control: #8f8f8f;
+  --text: #0a0a0a;
+  --muted: #6b6b6b;
+  --accent: #141414;
+  --positive: #2e7d32;
+  --negative: #c4242a;
+  --warning: #92400e;
+  --chart-hue: #1d5fbf;
+  /* v2 "lit" additions: cool elevation and focus light (all in the blue family).
+     Panels stay bound to the ground: every layer under 8% black, so the depth
+     reads through the top-lit wash, not a shadow. Only the dialog may float. */
+  --shadow-panel: 0 1px 2px rgba(21, 38, 76, 0.04), 0 6px 16px -8px rgba(21, 38, 76, 0.06),
+    0 7px 24px -14px rgba(21, 38, 76, 0.08);
+  --shadow-dialog: 0 1px 2px rgba(21, 38, 76, 0.08), 0 12px 32px -8px rgba(21, 38, 76, 0.18),
+    0 32px 64px -32px rgba(21, 38, 76, 0.22);
+  --ring-blue: 0 0 0 3px rgba(29, 95, 191, 0.15);
+  --pill-positive-bg: #dcfae5;
+  --pill-positive-ink: #04250e;
+  --pill-negative-bg: #ffedea;
+  --pill-negative-ink: #831c1e;
+  --pill-warning-bg: #fffbeb;
+  --pill-warning-ink: #92400e;
+  --pill-neutral-bg: #eeeeee;
+  --pill-neutral-ink: #3d3d3d;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--ground);
+  color: var(--text);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* A cold top-lit wash replaces the flat ground: light falls from above,
+   panels cast soft shadows, and nothing is coloured outside the blue family. */
+body {
+  background-image: linear-gradient(180deg, #fafbfe 0%, #f2f5fa 42%, #e9edf5 100%);
+}
+
+/* Course codes and IDs only */
+.mono-label {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.app-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-panel);
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.field-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  background: var(--surface);
+  border: 1px solid var(--control);
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.field-input::placeholder {
+  color: #757575;
+}
+
+.input-focus:focus {
+  border-color: #1d5fbf;
+  box-shadow: var(--ring-blue);
+}
+
+.mode-btn {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--muted);
+  /* 10px of top padding turns a 23px text target into a 41px one */
+  padding: 10px 2px 8px;
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+}
+
+.mode-btn:hover {
+  color: var(--text);
+}
+
+.mode-btn.active {
+  color: var(--text);
+  font-weight: 500;
+  border-bottom-color: var(--text);
+}
+
+.grade-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  min-width: 24px;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 12px;
+  background: var(--pill-neutral-bg);
+  color: var(--pill-neutral-ink);
+}
+
+.class-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade {
+  animation: fadeIn 0.25s ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade {
+    animation: none;
+  }
+}
+
+/* Roadmap ledger rows: level on the left lane, a 1px rail, input on the right */
+.roadmap-step::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 20px;
+  bottom: -20px;
+  width: 1px;
+  background: var(--border);
+}
+
+.roadmap-step:last-child::before {
+  display: none;
+}
+
+.roadmap-dot {
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--text);
+  border: 2px solid var(--ground);
+}
+
+.blueprint-item {
+  border-radius: 6px;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease,
+    box-shadow 0.15s ease;
+  border: 1px solid transparent;
+}
+
+.blueprint-item:hover {
+  border-color: var(--control);
+  background: var(--surface);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px -2px rgba(21, 38, 76, 0.14);
+}
+
+.blueprint-item:active {
+  background: var(--raised);
+}
+
+.modal-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb {
+  background: var(--control);
+  border-radius: 10px;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Faint scale track for the target ruler (signature element) */
+.scale-track {
+  position: relative;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--raised);
+}
+
+/* Low-opacity fill up to the current value: the ruler carries its data in hue */
+.scale-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  background: rgba(29, 95, 191, 0.18);
+}
+
+.scale-tick {
+  position: absolute;
+  top: -5px;
+  width: 2px;
+  height: 14px;
+  border-radius: 1px;
+}
+
+/* Boundary marks tie each printed label to its true position on the track */
+.scale-mark {
+  position: absolute;
+  top: -2px;
+  width: 1px;
+  height: 8px;
+  background: var(--control);
+}

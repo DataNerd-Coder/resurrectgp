@@ -1,0 +1,41 @@
+name: Deploy to Vercel
+
+# Pushes to main currently produce no build on Vercel (the production domain
+# serves a stale pre-Next.js deployment). This workflow rebuilds the app and
+# ships it to Vercel production after every push, so what lands in the repo
+# is what runs on resurrectgp.vercel.app.
+#
+# Requires repository secrets (create after `vercel link`, from
+# .vercel/project.json):
+#   VERCEL_TOKEN      - account scope token (vercel.com -> Settings -> Tokens)
+#   VERCEL_ORG_ID     - "orgId" project.json
+#   VERCEL_PROJECT_ID - "projectId" project.json
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy to Vercel (production)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npx vercel@latest pull --yes --environment=production --token "$VERCEL_TOKEN"
+          npx vercel@latest build --prod --token "$VERCEL_TOKEN"
+          npx vercel@latest deploy --prebuilt --prod --token "$VERCEL_TOKEN"
