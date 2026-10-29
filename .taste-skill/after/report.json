@@ -1,6 +1,6 @@
 {
  "url": "http://localhost:3000",
- "at": "2026-10-29T20:36:23.423Z",
+ "at": "2026-10-29T20:52:34.251Z",
  "allow": [],
  "viewports": [
   {
@@ -247,6 +247,7 @@
     },
     "fontsLoaded": [
      "geist",
+     "geist fallback",
      "__nextjs-geist"
     ]
    },
@@ -678,6 +679,7 @@
     },
     "fontsLoaded": [
      "geist",
+     "geist fallback",
      "__nextjs-geist"
     ]
    },
